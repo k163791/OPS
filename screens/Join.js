@@ -19,6 +19,14 @@ export default function Join({ navigation }) {
     navigation.navigate("SignIn");
   };
 
+  const goToSignUp = () => {
+    navigation.navigate("SignUp");
+  };
+
+  const goToHome = () => {
+    navigation.navigate("Home");
+  };
+
   return (
     <View style={styles.container}>
       <View
@@ -29,8 +37,8 @@ export default function Join({ navigation }) {
         }}
       >
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="ios-arrow-up" size={30} />
-          <Text style={{ textAlign: "center", right: 15 }}>Go Back</Text>
+          <Ionicons name="ios-arrow-up" size={30} style={{ left: 10 }} />
+          <Text style={{ textAlign: "center" }}>Go Back</Text>
         </TouchableOpacity>
       </View>
       <View
@@ -110,6 +118,7 @@ export default function Join({ navigation }) {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
+          onPress={goToSignUp}
           style={{
             flexDirection: "row",
             justifyContent: "space-evenly",
@@ -160,7 +169,7 @@ export default function Join({ navigation }) {
           marginHorizontal: 10,
         }}
       >
-        <TouchableOpacity onPress={goToSignIn}>
+        <TouchableOpacity onPress={goToHome}>
           <Text style={{ fontSize: 14, fontWeight: "bold", color: "#F03F97" }}>
             Skip
           </Text>

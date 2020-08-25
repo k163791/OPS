@@ -38,8 +38,8 @@ export default function Intro({ navigation }) {
         }}
       >
         <TouchableOpacity>
-          <Ionicons name="ios-arrow-up" size={30} />
-          <Text style={{ textAlign: "center", right: 15 }}>Go Back</Text>
+          <Ionicons name="ios-arrow-up" size={30} style={{ left: 10 }} />
+          <Text style={{ textAlign: "center" }}>Go Back</Text>
         </TouchableOpacity>
       </View>
       <View

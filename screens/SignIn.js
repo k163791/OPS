@@ -26,8 +26,8 @@ export default function SignIn({ navigation }) {
         }}
       >
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="ios-arrow-up" size={30} />
-          <Text style={{ textAlign: "center", right: 15 }}>Go Back</Text>
+          <Ionicons name="ios-arrow-up" size={30} style={{ left: 10 }} />
+          <Text style={{ textAlign: "center" }}>Go Back</Text>
         </TouchableOpacity>
       </View>
       <View>
@@ -59,6 +59,7 @@ export default function SignIn({ navigation }) {
           />
           <TextInput
             placeholder="Password"
+            secureTextEntry={true}
             placeholderTextColor="#F8C471"
             style={{
               width: "90%",
@@ -98,6 +99,67 @@ export default function SignIn({ navigation }) {
             or via social networks
           </Text>
         </View>
+        <View>
+          <View style={{ flexDirection: "row" }}>
+            <TouchableOpacity
+              style={{
+                width: "42%",
+                height: 50,
+                marginHorizontal: 20,
+                backgroundColor: "#0F60EC",
+                borderRadius: 10,
+              }}
+            >
+              <Text
+                style={{
+                  color: "white",
+                  fontWeight: "bold",
+                  fontSize: 14,
+                  alignSelf: "center",
+                  paddingTop: 12,
+                }}
+              >
+                Facebook
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                width: "42%",
+                height: 50,
+                marginHorizontal: 10,
+                backgroundColor: "#309AF2",
+                borderRadius: 10,
+              }}
+            >
+              <Text
+                style={{
+                  color: "white",
+                  fontWeight: "bold",
+                  fontSize: 14,
+                  alignSelf: "center",
+                  paddingTop: 12,
+                }}
+              >
+                Google
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+      <View
+        style={{
+          position: "absolute",
+          bottom: 0,
+          right: 0,
+          marginHorizontal: 20,
+          marginBottom: 10,
+        }}
+      >
+        <TouchableOpacity>
+          <Text style={{ color: "gold", fontWeight: "bold" }}>
+            Forgot Password
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
