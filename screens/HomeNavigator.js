@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import HomeScreen from "./HomeScreens/HomeScreen";
 import SearchScreen from "./HomeScreens/SearchScreen";
-
+import NotificationScreen from "./HomeScreens/NotificationScreen";
 function SettingsScreen() {
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -50,6 +50,8 @@ export default function Homenavigator() {
               iconName = "send";
             } else if (route.name === "Search") {
               iconName = "search";
+            } else if (route.name === "Notification") {
+              iconName = "inbox";
             }
 
             // You can return any component that you like here!
@@ -64,6 +66,7 @@ export default function Homenavigator() {
         <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="Messages" component={MessagesScreen} />
         <Tab.Screen name="Search" component={SearchScreen} />
+        <Tab.Screen name="Notification" component={NotificationScreen} />
         <Tab.Screen name="Account" component={AccountScreen} />
       </Tab.Navigator>
     </NavigationContainer>
