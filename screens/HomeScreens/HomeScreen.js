@@ -7,13 +7,19 @@ import {
   FlatList,
   Image,
   StyleSheet,
+  TextInput,
+  ImageBackground,
 } from "react-native";
-import { Feather, Ionicons } from "@expo/vector-icons";
+import { Feather, Ionicons, FontAwesome } from "@expo/vector-icons";
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
 const Drawer = createDrawerNavigator();
 
-function homeDrawer() {
+function homeDrawer({ navigation }) {
   const [gallery, setgallery] = useState([
     {
       image: {
@@ -50,85 +56,153 @@ function homeDrawer() {
   ]);
 
   return (
-    <View>
-      <View
-        style={{
-          backgroundColor: "#F7DC6F",
-          height: 100,
-          width: "100%",
-          borderBottomRightRadius: 40,
-          borderBottomLeftRadius: 40,
-        }}
-      >
-        <Text
-          style={{
-            position: "absolute",
-            bottom: 0,
-            fontSize: 25,
-            fontWeight: "bold",
-            color: "black",
-            alignSelf: "center",
-            marginBottom: 10,
-          }}
-        >
-          OPS
-        </Text>
+    <View style={{ flex: 1, marginBottom: 10 }}>
+      <View style={styles.headerContainer}>
+        <Text style={styles.headerText}>OPS</Text>
         <View>
           <Feather
             name="menu"
             size={24}
-            color="#E74C3C"
-            style={{ position: "absolute", top: 60, left: 20 }}
+            color="#ff0048"
+            style={{ position: "absolute", top: 60, left: 20, opacity: 12 }}
+            onPress={() => navigation.openDrawer()}
           />
+
           <Ionicons
             name="ios-wallet"
             size={24}
-            color="#E74C3C"
+            color="#ff0048"
             style={{ position: "absolute", top: 60, right: 30 }}
           />
         </View>
       </View>
 
-      <ScrollView>
+      <ScrollView style={{ flexGrow: 1, height: "100%" }}>
         <View
           style={{
-            padding: 20,
+            alignItems: "center",
+            marginVertical: 10,
             flexDirection: "row",
-            justifyContent: "space-between",
+            justifyContent: "center",
           }}
         >
-          <Text style={{ fontSize: 22, fontWeight: "bold" }}>
+          <FontAwesome name="search" size={20} color="#ff0048" />
+          <TextInput
+            placeholder="Find services you want"
+            style={{
+              height: hp("5%"),
+              width: wp("80%"),
+              borderColor: "transparent",
+              borderWidth: 1,
+              left: 10,
+            }}
+          />
+        </View>
+        <View style={styles.titleContainer}>
+          <Text style={{ fontSize: 20, fontWeight: "bold" }}>
             Popular Services
           </Text>
-          <Text style={{ fontSize: 14, fontWeight: "bold", color: "#ff6200" }}>
-            View All
-          </Text>
+          <TouchableOpacity>
+            <Text style={{ top: 20, color: "#ff0048", fontWeight: "bold" }}>
+              View All
+            </Text>
+          </TouchableOpacity>
         </View>
-        <View>
+        <View style={{ marginTop: 20 }}>
           <FlatList
+            style={{ marginHorizontal: 10 }}
             horizontal={true}
+            showsHorizontalScrollIndicator={false}
             data={gallery}
             renderItem={({ item }) => {
               return (
-                <View style={{ paddingVertical: 20, paddingLeft: 16 }}>
+                <View
+                  style={{
+                    flex: 1,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginHorizontal: 10,
+                  }}
+                >
                   <TouchableOpacity>
-                    <Image
-                      source={item.image}
+                    <View
                       style={{
-                        width: 150,
-                        marginRight: 8,
-                        height: 250,
+                        backgroundColor: "#eee",
                         borderRadius: 10,
+                        overflow: "hidden",
                       }}
-                    />
-                    <View style={styles.imageOverlay}></View>
-                    <Feather
-                      name="map-pin"
-                      size={16}
-                      color="white"
-                      stye={styles.imageIcon}
-                    />
-                    <Text style={styles.imageText}>{item.title}</Text>
+                    >
+                      <View>
+                        <Image
+                          source={item.image}
+                          style={{
+                            height: 135,
+                            width: 120,
+                          }}
+                        />
+                      </View>
+                      <View style={{ padding: 10, width: 120 }}>
+                        <Text style={{ textAlign: "center" }}>
+                          {item.title}
+                        </Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              );
+            }}
+          />
+        </View>
+        <View style={{ height: 30 }}></View>
+        <View style={styles.titleContainer}>
+          <Text style={{ fontSize: 12, fontWeight: "bold" }}>
+            Inspired by Your Browser History
+          </Text>
+          <TouchableOpacity>
+            <Text style={{ top: 10, color: "#ff0048", fontWeight: "bold" }}>
+              View All
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View style={{ marginTop: 20 }}>
+          <FlatList
+            style={{ marginHorizontal: 10 }}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            data={gallery}
+            renderItem={({ item }) => {
+              return (
+                <View
+                  style={{
+                    flex: 1,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginHorizontal: 10,
+                  }}
+                >
+                  <TouchableOpacity>
+                    <View
+                      style={{
+                        backgroundColor: "#eee",
+                        borderRadius: 10,
+                        overflow: "hidden",
+                      }}
+                    >
+                      <View>
+                        <Image
+                          source={item.image}
+                          style={{
+                            height: 135,
+                            width: 120,
+                          }}
+                        />
+                      </View>
+                      <View style={{ padding: 10, width: 120 }}>
+                        <Text style={{ textAlign: "center" }}>
+                          {item.title}
+                        </Text>
+                      </View>
+                    </View>
                   </TouchableOpacity>
                 </View>
               );
@@ -140,98 +214,47 @@ function homeDrawer() {
   );
 }
 
+function helpAndSupport() {
+  return (
+    <View style={{ alignContent: "center", flex: 1, justifyContent: "center" }}>
+      <Text>Help & Support</Text>
+    </View>
+  );
+}
+
+function aboutUs() {
+  return (
+    <View style={{ flex: 1, alignContent: "center", justifyContent: "center" }}>
+      <Text>aboutUs</Text>
+    </View>
+  );
+}
+
+function shareApp() {
+  return (
+    <View style={{ flex: 1, alignContent: "center", justifyContent: "center" }}>
+      <Text>shareApp</Text>
+    </View>
+  );
+}
+
+function settings() {
+  return (
+    <View style={{ flex: 1, alignContent: "center", justifyContent: "center" }}>
+      <Text>settings</Text>
+    </View>
+  );
+}
+
 export default function HomeScreen() {
   return (
-    // <View>
     <Drawer.Navigator>
       <Drawer.Screen name="Home" component={homeDrawer} />
+      <Drawer.Screen name="Help and Support" component={helpAndSupport} />
+      <Drawer.Screen name="About Us" component={aboutUs} />
+      <Drawer.Screen name="Share Application" component={shareApp} />
+      <Drawer.Screen name="Settings" component={settings} />
     </Drawer.Navigator>
-    // <View
-    //   style={{
-    //     backgroundColor: "#F7DC6F",
-    //     height: 100,
-    //     width: "100%",
-    //     borderBottomRightRadius: 40,
-    //     borderBottomLeftRadius: 40,
-    //   }}
-    // >
-    //   <Text
-    //     style={{
-    //       position: "absolute",
-    //       bottom: 0,
-    //       fontSize: 25,
-    //       fontWeight: "bold",
-    //       color: "black",
-    //       alignSelf: "center",
-    //       marginBottom: 10,
-    //     }}
-    //   >
-    //     OPS
-    //   </Text>
-    //   <View>
-    //     <Feather
-    //       name="menu"
-    //       size={24}
-    //       color="#E74C3C"
-    //       style={{ position: "absolute", top: 60, left: 20 }}
-    //     />
-    //     <Ionicons
-    //       name="ios-wallet"
-    //       size={24}
-    //       color="#E74C3C"
-    //       style={{ position: "absolute", top: 60, right: 30 }}
-    //     />
-    //   </View>
-    // </View>
-
-    // <ScrollView>
-    //   <View
-    //     style={{
-    //       padding: 20,
-    //       flexDirection: "row",
-    //       justifyContent: "space-between",
-    //     }}
-    //   >
-    //     <Text style={{ fontSize: 22, fontWeight: "bold" }}>
-    //       Popular Services
-    //     </Text>
-    //     <Text style={{ fontSize: 14, fontWeight: "bold", color: "#ff6200" }}>
-    //       View All
-    //     </Text>
-    //   </View>
-    //   <View>
-    //     <FlatList
-    //       horizontal={true}
-    //       data={gallery}
-    //       renderItem={({ item }) => {
-    //         return (
-    //           <View style={{ paddingVertical: 20, paddingLeft: 16 }}>
-    //             <TouchableOpacity>
-    //               <Image
-    //                 source={item.image}
-    //                 style={{
-    //                   width: 150,
-    //                   marginRight: 8,
-    //                   height: 250,
-    //                   borderRadius: 10,
-    //                 }}
-    //               />
-    //               <View style={styles.imageOverlay}></View>
-    //               <Feather
-    //                 name="map-pin"
-    //                 size={16}
-    //                 color="white"
-    //                 stye={styles.imageIcon}
-    //               />
-    //               <Text style={styles.imageText}>{item.title}</Text>
-    //             </TouchableOpacity>
-    //           </View>
-    //         );
-    //       }}
-    //     />
-    //   </View>
-    // </ScrollView>
-    // </View>
   );
 }
 
@@ -242,30 +265,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  DarkOverlay: {
-    position: "absolute",
-    top: 0,
-    right: 0,
-    left: 0,
-    bottom: 0,
-    height: 270,
-    backgroundColor: "#000",
-    opacity: 0.2,
-    borderBottomRightRadius: 65,
-  },
-  userGreet: {
-    fontSize: 38,
-    fontWeight: "bold",
-    color: "white",
-  },
-  userText: {
-    fontSize: 16,
-    fontWeight: "normal",
-    color: "white",
-  },
   searchContainer: {
-    paddingTop: 100,
-    paddingLeft: 16,
+    flex: 1,
+    alignContent: "center",
+    justifyContent: "center",
   },
   searchBox: {
     marginTop: 16,
@@ -277,8 +280,8 @@ const styles = StyleSheet.create({
     width: "90%",
   },
   imageOverlay: {
-    width: 150,
-    height: 250,
+    width: wp("41.5%"),
+    height: hp("42%"),
     marginRight: 8,
     borderRadius: 10,
     position: "absolute",
@@ -294,9 +297,34 @@ const styles = StyleSheet.create({
   imageText: {
     position: "absolute",
     color: "white",
-    marginTop: 4,
-    fontSize: 14,
+    fontSize: hp("2.2%"),
     left: 30,
     bottom: 20,
+  },
+  headerContainer: {
+    backgroundColor: "#F7DC6F",
+    height: hp("18%"),
+    width: wp("100%"),
+    borderBottomRightRadius: 40,
+    borderBottomLeftRadius: 40,
+  },
+  headerText: {
+    position: "absolute",
+    bottom: 0,
+    fontSize: hp("4.7%"),
+    fontWeight: "bold",
+    color: "black",
+    alignSelf: "center",
+    marginBottom: hp("2%"),
+  },
+  titleContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
+  imageStyle: {
+    width: wp("35%"),
+    marginRight: 8,
+    height: hp("25%"),
+    borderRadius: 10,
   },
 });

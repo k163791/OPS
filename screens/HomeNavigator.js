@@ -6,6 +6,7 @@ import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import HomeScreen from "./HomeScreens/HomeScreen";
 import SearchScreen from "./HomeScreens/SearchScreen";
 import NotificationScreen from "./HomeScreens/NotificationScreen";
+import MessagesScreen from "./HomeScreens/MessagesScreen";
 
 function SettingsScreen() {
   return (
@@ -19,14 +20,6 @@ function AccountScreen() {
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <Text>Account!</Text>
-    </View>
-  );
-}
-
-function MessagesScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Messages!</Text>
     </View>
   );
 }
@@ -51,7 +44,7 @@ export default function Homenavigator() {
           } else if (route.name === "Search") {
             iconName = "search";
           } else if (route.name === "Notification") {
-            iconName = "inbox";
+            iconName = "bell";
           }
 
           // You can return any component that you like here!
@@ -59,7 +52,7 @@ export default function Homenavigator() {
         },
       })}
       tabBarOptions={{
-        activeTintColor: "tomato",
+        activeTintColor: "#ff0048",
         inactiveTintColor: "gray",
       }}
     >
