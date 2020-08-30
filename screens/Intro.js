@@ -17,6 +17,10 @@ import {
   MaterialIcons,
   Ionicons,
 } from "@expo/vector-icons";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
 export default function Intro({ navigation }) {
   const goToJoin = () => {
@@ -24,166 +28,68 @@ export default function Intro({ navigation }) {
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
-        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-      }}
-    >
-      <View
-        style={{
-          alignItems: "center",
-          marginBottom: 10,
-          marginTop: 10,
-        }}
-      >
+    <View style={styles.container}>
+      <View style={styles.backContainer}>
         <TouchableOpacity>
-          <Ionicons name="ios-arrow-up" size={30} style={{ left: 10 }} />
-          <Text style={{ textAlign: "center" }}>Go Back</Text>
+          <Ionicons name="ios-arrow-up" size={hp("4%")} />
         </TouchableOpacity>
       </View>
-      <View
-        style={{
-          marginTop: 10,
-          padding: 20,
-          marginBottom: 20,
-        }}
-      >
+      <View style={styles.headingContainer}>
         <Text style={styles.userGreet}>Work for your effort</Text>
         <Text>You bring the printing skills, we'll make the earning</Text>
       </View>
-      <View style={{ marginBottom: 20 }}>
-        <View
-          style={{
-            flexDirection: "row",
-            paddingHorizontal: 10,
-            marginHorizontal: 30,
-            justifyContent: "center",
-            marginBottom: 20,
-          }}
-        >
+      <View>
+        <View style={styles.contentOuterView}>
           {/*  1st View */}
-          <View style={{ height: 100 }}>
+          <View style={styles.contentHeight}>
             <Feather name="shopping-bag" size={65} color="gold" />
           </View>
-          <View
-            style={{
-              paddingHorizontal: 12,
-              marginHorizontal: 12,
-            }}
-          >
-            <Text
-              style={{ fontWeight: "bold", marginBottom: 10, fontSize: 14 }}
-            >
-              Create a Shop
-            </Text>
-            <Text style={{}}>
+          <View style={styles.rightText}>
+            <Text style={styles.rightTextHeaderStyle}>Create a Shop</Text>
+            <Text style={styles.rightTextContentStyle}>
               Offer your printing services to the right digital audience and
               start earning
             </Text>
           </View>
         </View>
-        <View
-          style={{
-            flexDirection: "row",
-            paddingHorizontal: 10,
-            marginHorizontal: 30,
-            justifyContent: "center",
-            marginBottom: 20,
-          }}
-        >
+        <View style={styles.contentOuterView}>
           {/*  2nd View */}
-          <View style={{ height: 100 }}>
+          <View style={styles.contentHeight}>
             <MaterialCommunityIcons
               name="truck-delivery"
               size={65}
               color="gold"
             />
           </View>
-          <View
-            style={{
-              paddingHorizontal: 12,
-              marginHorizontal: 12,
-            }}
-          >
-            <Text
-              style={{ fontWeight: "bold", marginBottom: 10, fontSize: 14 }}
-            >
-              Deliver your work
-            </Text>
-            <Text style={{}}>
+          <View style={styles.rightText}>
+            <Text style={styles.rightTextHeaderStyle}>Deliver your work</Text>
+            <Text style={styles.rightTextContentStyle}>
               use our built-in tools to communicate with your customers and
               deliver their orders
             </Text>
           </View>
         </View>
-        <View
-          style={{
-            flexDirection: "row",
-            paddingHorizontal: 10,
-            marginHorizontal: 30,
-            justifyContent: "center",
-            marginBottom: 20,
-          }}
-        >
+        <View style={styles.contentOuterView}>
           {/*  3rd View */}
-          <View style={{ height: 100 }}>
+          <View style={styles.contentHeight}>
             <MaterialIcons name="payment" size={65} color="gold" />
           </View>
-          <View
-            style={{
-              paddingHorizontal: 12,
-              marginHorizontal: 12,
-            }}
-          >
-            <Text
-              style={{ fontWeight: "bold", marginBottom: 10, fontSize: 14 }}
-            >
-              Get Paid
-            </Text>
-            <Text style={{}}>
+          <View style={styles.rightText}>
+            <Text style={styles.rightTextHeaderStyle}>Get Paid</Text>
+            <Text style={styles.rightTextContentStyle}>
               Recieve your payment once the order is complete
             </Text>
           </View>
         </View>
       </View>
-      <View
-        style={{
-          marginBottom: 20,
-          position: "absolute",
-          bottom: 0,
-          left: 30,
-          alignItems: "center",
-        }}
-      >
+      <View style={styles.btnContainer}>
         <View
           style={{
             alignItems: "center",
           }}
         >
-          <TouchableOpacity
-            style={{
-              width: 300,
-              height: 50,
-              elevation: 10,
-              borderRadius: 10,
-              backgroundColor: "gold",
-              paddingVertical: 10,
-              paddingHorizontal: 12,
-            }}
-            onPress={goToJoin}
-          >
-            <Text
-              style={{
-                fontSize: 14,
-                color: "#fff",
-                fontWeight: "bold",
-                alignSelf: "center",
-                textTransform: "uppercase",
-              }}
-            >
-              continue
-            </Text>
+          <TouchableOpacity style={styles.btnStyle} onPress={goToJoin}>
+            <Text style={styles.btnTextStyle}>continue</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -192,9 +98,66 @@ export default function Intro({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+  },
   userGreet: {
-    fontSize: 25,
+    fontSize: hp("3.8%"),
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: hp("1%"),
+  },
+  backContainer: {
+    alignItems: "center",
+    marginBottom: hp("1%"),
+    marginTop: hp("1%"),
+  },
+  headingContainer: {
+    marginTop: hp("1%"),
+    padding: hp("2%") + wp("2%"),
+    marginBottom: hp("3%"),
+  },
+  contentOuterView: {
+    flexDirection: "row",
+    paddingHorizontal: wp("2%"),
+    marginHorizontal: wp("10%"),
+    justifyContent: "center",
+    marginBottom: hp("4%"),
+  },
+  rightText: {
+    paddingHorizontal: wp("2%"),
+    marginHorizontal: wp("5%"),
+  },
+  rightTextHeaderStyle: {
+    fontWeight: "bold",
+    marginBottom: hp("1%"),
+    fontSize: hp("2.2%"),
+  },
+  rightTextContentStyle: {
+    fontSize: hp("2.2%"),
+  },
+  contentHeight: { height: hp("15%") },
+  btnContainer: {
+    marginBottom: hp("4%"),
+    position: "absolute",
+    bottom: 0,
+    left: 30,
+    alignItems: "center",
+  },
+  btnStyle: {
+    width: wp("80%"),
+    height: hp("8%"),
+    elevation: hp("1%"),
+    borderRadius: 10,
+    backgroundColor: "gold",
+    paddingVertical: hp("2%"),
+    paddingHorizontal: wp("1%"),
+  },
+  btnTextStyle: {
+    fontSize: hp("2.2%"),
+    color: "#fff",
+    fontWeight: "bold",
+    alignSelf: "center",
+    textTransform: "uppercase",
   },
 });

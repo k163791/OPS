@@ -9,8 +9,11 @@ import {
   StyleSheet,
 } from "react-native";
 import { Feather, Ionicons } from "@expo/vector-icons";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 
-export default function HomeScreen() {
+const Drawer = createDrawerNavigator();
+
+function homeDrawer() {
   const [gallery, setgallery] = useState([
     {
       image: {
@@ -134,6 +137,101 @@ export default function HomeScreen() {
         </View>
       </ScrollView>
     </View>
+  );
+}
+
+export default function HomeScreen() {
+  return (
+    // <View>
+    <Drawer.Navigator>
+      <Drawer.Screen name="Home" component={homeDrawer} />
+    </Drawer.Navigator>
+    // <View
+    //   style={{
+    //     backgroundColor: "#F7DC6F",
+    //     height: 100,
+    //     width: "100%",
+    //     borderBottomRightRadius: 40,
+    //     borderBottomLeftRadius: 40,
+    //   }}
+    // >
+    //   <Text
+    //     style={{
+    //       position: "absolute",
+    //       bottom: 0,
+    //       fontSize: 25,
+    //       fontWeight: "bold",
+    //       color: "black",
+    //       alignSelf: "center",
+    //       marginBottom: 10,
+    //     }}
+    //   >
+    //     OPS
+    //   </Text>
+    //   <View>
+    //     <Feather
+    //       name="menu"
+    //       size={24}
+    //       color="#E74C3C"
+    //       style={{ position: "absolute", top: 60, left: 20 }}
+    //     />
+    //     <Ionicons
+    //       name="ios-wallet"
+    //       size={24}
+    //       color="#E74C3C"
+    //       style={{ position: "absolute", top: 60, right: 30 }}
+    //     />
+    //   </View>
+    // </View>
+
+    // <ScrollView>
+    //   <View
+    //     style={{
+    //       padding: 20,
+    //       flexDirection: "row",
+    //       justifyContent: "space-between",
+    //     }}
+    //   >
+    //     <Text style={{ fontSize: 22, fontWeight: "bold" }}>
+    //       Popular Services
+    //     </Text>
+    //     <Text style={{ fontSize: 14, fontWeight: "bold", color: "#ff6200" }}>
+    //       View All
+    //     </Text>
+    //   </View>
+    //   <View>
+    //     <FlatList
+    //       horizontal={true}
+    //       data={gallery}
+    //       renderItem={({ item }) => {
+    //         return (
+    //           <View style={{ paddingVertical: 20, paddingLeft: 16 }}>
+    //             <TouchableOpacity>
+    //               <Image
+    //                 source={item.image}
+    //                 style={{
+    //                   width: 150,
+    //                   marginRight: 8,
+    //                   height: 250,
+    //                   borderRadius: 10,
+    //                 }}
+    //               />
+    //               <View style={styles.imageOverlay}></View>
+    //               <Feather
+    //                 name="map-pin"
+    //                 size={16}
+    //                 color="white"
+    //                 stye={styles.imageIcon}
+    //               />
+    //               <Text style={styles.imageText}>{item.title}</Text>
+    //             </TouchableOpacity>
+    //           </View>
+    //         );
+    //       }}
+    //     />
+    //   </View>
+    // </ScrollView>
+    // </View>
   );
 }
 
