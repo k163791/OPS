@@ -7,19 +7,12 @@ import HomeScreen from "./HomeScreens/HomeScreen";
 import SearchScreen from "./HomeScreens/SearchScreen";
 import NotificationScreen from "./HomeScreens/NotificationScreen";
 import MessagesScreen from "./HomeScreens/MessagesScreen";
+import AccountScreen from "./HomeScreens/AccountScreen";
 
 function SettingsScreen() {
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <Text>Settings!</Text>
-    </View>
-  );
-}
-
-function AccountScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Account!</Text>
     </View>
   );
 }

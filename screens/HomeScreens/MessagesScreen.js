@@ -9,6 +9,7 @@ import {
   StyleSheet,
   TextInput,
   ImageBackground,
+  SafeAreaView,
 } from "react-native";
 import { Feather, Ionicons, FontAwesome } from "@expo/vector-icons";
 import {
@@ -32,92 +33,94 @@ export default function MessagesScreen() {
   return (
     <View style={{ flex: 1, marginBottom: 10 }}>
       <View style={styles.headerContainer}>
+        <Text
+          style={{
+            top: 60,
+            fontWeight: "bold",
+            color: "#ff0048",
+          }}
+        >
+          Edit
+        </Text>
         <Text style={styles.headerText}>Inbox</Text>
-        <View>
-          <Text
-            style={{
-              position: "absolute",
-              top: 60,
-              left: 20,
-              color: "#ff0048",
-              fontWeight: "bold",
-            }}
-          >
-            Edit
-          </Text>
-        </View>
+        <Feather
+          name="settings"
+          size={20}
+          color="black"
+          style={{
+            top: 60,
+            color: "#ff0048",
+          }}
+        />
       </View>
-      <ScrollView
-        style={{
-          marginVertical: 10,
-          marginHorizontal: 10,
-          flexGrow: 1,
-          height: "100%",
-        }}
+
+      <SafeAreaView
+        style={{ flex: 1, marginVertical: 10, marginHorizontal: 10 }}
       >
-        <View>
-          <FlatList
-            data={message}
-            renderItem={({ item }) => {
-              return (
-                <TouchableOpacity>
-                  <View
+        <FlatList
+          data={message}
+          renderItem={({ item }) => {
+            return (
+              <TouchableOpacity>
+                <View
+                  style={{
+                    flex: 1,
+                    elevation: 5,
+                    backgroundColor: "#fff",
+                    marginBottom: 20,
+                    borderRadius: 10,
+                    padding: 20,
+                    alignItems: "flex-start",
+                  }}
+                >
+                  <Image
+                    source={{ uri: "https://i.redd.it/1ddlsj0xali51.jpg" }}
+                    style={{ height: 70, width: 70, borderRadius: 50 }}
+                  />
+                  <Text
                     style={{
-                      flex: 1,
-                      elevation: 5,
-                      backgroundColor: "#fff",
-                      marginBottom: 20,
-                      borderRadius: 10,
-                      padding: 20,
-                      alignItems: "flex-start",
+                      position: "absolute",
+                      top: 0,
+                      left: 100,
+                      top: 20,
+                      fontSize: 10,
+                      fontWeight: "bold",
                     }}
                   >
-                    <Image
-                      source={{ uri: "https://i.redd.it/1ddlsj0xali51.jpg" }}
-                      style={{ height: 70, width: 70, borderRadius: 50 }}
-                    />
-                    <Text
-                      style={{
-                        position: "absolute",
-                        top: 0,
-                        left: 100,
-                        top: 20,
-                        fontSize: 10,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      {item.message}
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 10,
-                        fontWeight: "bold",
-                        position: "absolute",
-                        top: 0,
-                        right: 0,
-                        marginRight: 10,
-                      }}
-                    >
-                      April 23, 2020
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 10,
-                        position: "absolute",
-                        top: 40,
-                        left: 100,
-                      }}
-                    >
-                      This is the message, jhasdjha ajsdhajshd jhasgdahsd
-                      asghdjhasgd
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              );
-            }}
-          />
-        </View>
-      </ScrollView>
+                    {item.message}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 10,
+                      fontWeight: "bold",
+                      position: "absolute",
+                      top: 0,
+                      right: 0,
+                      marginRight: 10,
+                    }}
+                  >
+                    April 23, 2020
+                  </Text>
+                  <Text
+                    numberOfLines={3}
+                    style={{
+                      fontSize: 10,
+                      position: "absolute",
+                      top: 40,
+                      left: 100,
+                      marginRight: wp("35%"),
+                    }}
+                  >
+                    This is the message, jhasdjha ajsdhajshd jhasgdahsd
+                    asghdjhasgd jashdhsd aksjdhkajshd kjashdkjashdk akjsdhk
+                    asdnasjdn asldjalsk jdlkasj dlakjslksdj
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            );
+          }}
+        />
+      </SafeAreaView>
     </View>
   );
 }
@@ -129,14 +132,14 @@ const styles = StyleSheet.create({
     width: wp("100%"),
     borderBottomRightRadius: 40,
     borderBottomLeftRadius: 40,
+    flexDirection: "row",
+    justifyContent: "space-around",
   },
   headerText: {
-    position: "absolute",
-    bottom: 0,
-    fontSize: hp("3.8%"),
+    top: 50,
+    fontSize: hp("4.7%"),
     fontWeight: "bold",
     color: "black",
-    alignSelf: "center",
-    marginBottom: hp("3%"),
+    marginBottom: hp("2%"),
   },
 });

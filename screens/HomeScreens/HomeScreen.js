@@ -58,23 +58,21 @@ function homeDrawer({ navigation }) {
   return (
     <View style={{ flex: 1, marginBottom: 10 }}>
       <View style={styles.headerContainer}>
+        <Feather
+          name="menu"
+          size={24}
+          color="#ff0048"
+          onPress={() => navigation.openDrawer()}
+          style={{ top: 60 }}
+        />
         <Text style={styles.headerText}>OPS</Text>
-        <View>
-          <Feather
-            name="menu"
-            size={24}
-            color="#ff0048"
-            style={{ position: "absolute", top: 60, left: 20, opacity: 12 }}
-            onPress={() => navigation.openDrawer()}
-          />
 
-          <Ionicons
-            name="ios-wallet"
-            size={24}
-            color="#ff0048"
-            style={{ position: "absolute", top: 60, right: 30 }}
-          />
-        </View>
+        <Ionicons
+          name="ios-wallet"
+          size={24}
+          color="#ff0048"
+          style={{ top: 60 }}
+        />
       </View>
 
       <ScrollView style={{ flexGrow: 1, height: "100%" }}>
@@ -91,7 +89,7 @@ function homeDrawer({ navigation }) {
             placeholder="Find services you want"
             style={{
               height: hp("5%"),
-              width: wp("80%"),
+              width: wp("70%"),
               borderColor: "transparent",
               borderWidth: 1,
               left: 10,
@@ -307,14 +305,14 @@ const styles = StyleSheet.create({
     width: wp("100%"),
     borderBottomRightRadius: 40,
     borderBottomLeftRadius: 40,
+    flexDirection: "row",
+    justifyContent: "space-around",
   },
   headerText: {
-    position: "absolute",
-    bottom: 0,
     fontSize: hp("4.7%"),
     fontWeight: "bold",
     color: "black",
-    alignSelf: "center",
+    top: 50,
     marginBottom: hp("2%"),
   },
   titleContainer: {
