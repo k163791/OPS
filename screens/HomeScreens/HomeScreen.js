@@ -16,7 +16,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-
+import DrawerContent from "./DrawerContent";
 const Drawer = createDrawerNavigator();
 
 function homeDrawer({ navigation }) {
@@ -196,8 +196,29 @@ function homeDrawer({ navigation }) {
                         />
                       </View>
                       <View style={{ padding: 10, width: 120 }}>
-                        <Text style={{ textAlign: "center" }}>
+                        <Text
+                          style={{
+                            textAlign: "center",
+                            fontSize: hp("2%"),
+                            fontWeight: "bold",
+                            color: "#ff0048",
+                          }}
+                        >
                           {item.title}
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          backgroundColor: "#fff",
+                          width: wp("12%"),
+                          height: 20,
+                          position: "absolute",
+                          top: 0,
+                          right: 0,
+                        }}
+                      >
+                        <Text style={{ color: "#ff0048", fontSize: hp("2%") }}>
+                          25 min
                         </Text>
                       </View>
                     </View>
@@ -246,8 +267,12 @@ function settings() {
 
 export default function HomeScreen() {
   return (
-    <Drawer.Navigator>
-      <Drawer.Screen name="Home" component={homeDrawer} />
+    <Drawer.Navigator drawerContent={(props) => <DrawerContent {...props} />}>
+      <Drawer.Screen
+        name="Home"
+        component={homeDrawer}
+        imageIcon={{ uri: "https://i.redd.it/1ddlsj0xali51.jpg" }}
+      />
       <Drawer.Screen name="Help and Support" component={helpAndSupport} />
       <Drawer.Screen name="About Us" component={aboutUs} />
       <Drawer.Screen name="Share Application" component={shareApp} />
