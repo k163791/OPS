@@ -33,25 +33,29 @@ export default function MessagesScreen() {
   return (
     <View style={{ flex: 1, marginBottom: 10 }}>
       <View style={styles.headerContainer}>
-        <Text
-          style={{
-            top: 60,
-            fontWeight: "bold",
-            color: "#ff0048",
-          }}
-        >
-          Edit
-        </Text>
+        <TouchableOpacity style={{ marginBottom: hp("3%") }}>
+          <Text
+            style={{
+              fontWeight: "bold",
+              color: "#ff0048",
+              fontSize: hp("3%"),
+            }}
+          >
+            Edit
+          </Text>
+        </TouchableOpacity>
+
         <Text style={styles.headerText}>Inbox</Text>
-        <Feather
-          name="settings"
-          size={20}
-          color="black"
-          style={{
-            top: 60,
-            color: "#ff0048",
-          }}
-        />
+        <TouchableOpacity style={{ marginBottom: hp("3%") }}>
+          <Feather
+            name="settings"
+            size={hp("3%")}
+            color="black"
+            style={{
+              color: "#ff0048",
+            }}
+          />
+        </TouchableOpacity>
       </View>
 
       <SafeAreaView
@@ -83,7 +87,7 @@ export default function MessagesScreen() {
                       top: 0,
                       left: 100,
                       top: 20,
-                      fontSize: 10,
+                      fontSize: 14,
                       fontWeight: "bold",
                     }}
                   >
@@ -91,7 +95,7 @@ export default function MessagesScreen() {
                   </Text>
                   <Text
                     style={{
-                      fontSize: 10,
+                      fontSize: 14,
                       fontWeight: "bold",
                       position: "absolute",
                       top: 0,
@@ -104,7 +108,7 @@ export default function MessagesScreen() {
                   <Text
                     numberOfLines={3}
                     style={{
-                      fontSize: 10,
+                      fontSize: 14,
                       position: "absolute",
                       top: 40,
                       left: 100,
@@ -128,15 +132,15 @@ export default function MessagesScreen() {
 const styles = StyleSheet.create({
   headerContainer: {
     backgroundColor: "#F7DC6F",
-    height: hp("18%"),
+    height: hp("15%"),
     width: wp("100%"),
-    borderBottomRightRadius: 40,
-    borderBottomLeftRadius: 40,
+    borderBottomRightRadius: 30,
+    borderBottomLeftRadius: 30,
     flexDirection: "row",
     justifyContent: "space-around",
+    alignItems: "flex-end",
   },
   headerText: {
-    top: 50,
     fontSize: hp("4.7%"),
     fontWeight: "bold",
     color: "black",

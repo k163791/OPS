@@ -9,15 +9,6 @@ import {
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function MapScreen({ navigation }) {
-  var markers = [
-    {
-      latitude: 38.8825,
-      longitude: -122.4324,
-      title: "Foo Place",
-      subtitle: "1234 Foo Drive",
-    },
-  ];
-
   return (
     <View style={{ flex: 1 }}>
       <MapView

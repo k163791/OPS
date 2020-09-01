@@ -58,21 +58,17 @@ function homeDrawer({ navigation }) {
   return (
     <View style={{ flex: 1, marginBottom: 10 }}>
       <View style={styles.headerContainer}>
-        <Feather
-          name="menu"
-          size={24}
-          color="#ff0048"
+        <TouchableOpacity
           onPress={() => navigation.openDrawer()}
-          style={{ top: 60 }}
-        />
-        <Text style={styles.headerText}>OPS</Text>
+          style={{ marginBottom: hp("3%") }}
+        >
+          <Feather name="menu" size={hp("3.7%")} color="#ff0048" />
+        </TouchableOpacity>
 
-        <Ionicons
-          name="ios-wallet"
-          size={24}
-          color="#ff0048"
-          style={{ top: 60 }}
-        />
+        <Text style={styles.headerText}>OPS</Text>
+        <TouchableOpacity style={{ marginBottom: hp("3%") }}>
+          <Ionicons name="ios-wallet" size={hp("3.7%")} color="#ff0048" />
+        </TouchableOpacity>
       </View>
 
       <ScrollView style={{ flexGrow: 1, height: "100%" }}>
@@ -151,7 +147,7 @@ function homeDrawer({ navigation }) {
             }}
           />
         </View>
-        <View style={{ height: 30 }}></View>
+        <View style={{ height: 50 }}></View>
         <View style={styles.titleContainer}>
           <Text style={{ fontSize: 12, fontWeight: "bold" }}>
             Inspired by Your Browser History
@@ -210,14 +206,22 @@ function homeDrawer({ navigation }) {
                       <View
                         style={{
                           backgroundColor: "#fff",
-                          width: wp("12%"),
-                          height: 20,
+                          width: wp("15%"),
+                          height: hp("3%"),
                           position: "absolute",
                           top: 0,
                           right: 0,
+                          borderBottomLeftRadius: 10,
                         }}
                       >
-                        <Text style={{ color: "#ff0048", fontSize: hp("2%") }}>
+                        <Text
+                          style={{
+                            color: "#ff0048",
+                            fontSize: hp("1.5%"),
+                            fontWeight: "bold",
+                            textAlign: "center",
+                          }}
+                        >
                           25 min
                         </Text>
                       </View>
@@ -326,18 +330,18 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     backgroundColor: "#F7DC6F",
-    height: hp("18%"),
+    height: hp("15%"),
     width: wp("100%"),
-    borderBottomRightRadius: 40,
-    borderBottomLeftRadius: 40,
+    borderBottomRightRadius: 30,
+    borderBottomLeftRadius: 30,
     flexDirection: "row",
     justifyContent: "space-around",
+    alignItems: "flex-end",
   },
   headerText: {
     fontSize: hp("4.7%"),
     fontWeight: "bold",
     color: "black",
-    top: 50,
     marginBottom: hp("2%"),
   },
   titleContainer: {

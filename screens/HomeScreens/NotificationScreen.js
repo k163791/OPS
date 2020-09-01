@@ -38,19 +38,33 @@ export default function NotificationScreen() {
     <View style={{ flex: 1, marginBottom: 10 }}>
       <View style={styles.headerContainer}>
         <Text style={styles.headerText}>Notifications</Text>
-        <Text
-          style={{
-            position: "absolute",
-            top: 60,
-            right: 20,
-            fontWeight: "bold",
-            color: "#ff0048",
-          }}
-        >
-          Edit
-        </Text>
+        <TouchableOpacity>
+          <Text
+            style={{
+              fontWeight: "bold",
+              color: "#ff0048",
+              fontSize: hp("3%"),
+              left: wp("12%"),
+              marginBottom: hp("3%"),
+            }}
+          >
+            Edit
+          </Text>
+        </TouchableOpacity>
       </View>
-
+      <View style={{ margin: 10 }}>
+        <TouchableOpacity>
+          <Text
+            style={{
+              fontSize: hp("2.2%"),
+              fontWeight: "bold",
+              color: "#ff0048",
+            }}
+          >
+            Earlier
+          </Text>
+        </TouchableOpacity>
+      </View>
       <SafeAreaView
         style={{ flex: 1, marginVertical: 10, marginHorizontal: 10 }}
       >
@@ -112,14 +126,15 @@ export default function NotificationScreen() {
 const styles = StyleSheet.create({
   headerContainer: {
     backgroundColor: "#F7DC6F",
-    height: hp("18%"),
+    height: hp("15%"),
     width: wp("100%"),
-    borderBottomRightRadius: 40,
-    borderBottomLeftRadius: 40,
+    borderBottomRightRadius: 30,
+    borderBottomLeftRadius: 30,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "flex-end",
   },
   headerText: {
-    textAlign: "center",
-    top: 50,
     fontSize: hp("4.7%"),
     fontWeight: "bold",
     color: "black",

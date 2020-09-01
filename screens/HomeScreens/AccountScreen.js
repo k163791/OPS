@@ -16,6 +16,7 @@ import {
 } from "react-native-responsive-screen";
 import { Feather, Ionicons, FontAwesome5 } from "@expo/vector-icons";
 import { TextInput } from "react-native-gesture-handler";
+import { Badge } from "react-native-elements";
 
 export default function AccountScreen({ navigation }) {
   return (
@@ -32,6 +33,15 @@ export default function AccountScreen({ navigation }) {
             left: 20,
           }}
         />
+        <Badge
+          status="success"
+          containerStyle={{
+            position: "absolute",
+            top: 120,
+            right: 190,
+            left: 0,
+          }}
+        />
         <Text
           style={{
             position: "absolute",
@@ -43,6 +53,7 @@ export default function AccountScreen({ navigation }) {
         >
           Bruce Wayne
         </Text>
+
         <View
           style={{
             flexDirection: "row",
@@ -54,12 +65,19 @@ export default function AccountScreen({ navigation }) {
           <Text style={{ fontSize: 14 }}>Personal Balance</Text>
           <Text style={{ fontSize: 14, fontWeight: "bold" }}>: $0</Text>
         </View>
-        <Feather
-          name="settings"
-          size={24}
-          color="black"
-          style={{ position: "absolute", right: 20, top: 30, color: "#ff0048" }}
-        />
+        <TouchableOpacity>
+          <Feather
+            name="settings"
+            size={24}
+            color="black"
+            style={{
+              top: hp("8%"),
+              left: wp("86%"),
+              color: "#ff0048",
+            }}
+          />
+        </TouchableOpacity>
+
         <View
           style={{
             elevation: 10,

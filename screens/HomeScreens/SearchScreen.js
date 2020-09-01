@@ -18,7 +18,7 @@ import { TextInput } from "react-native-gesture-handler";
 export default function SearchScreen({ navigation }) {
   const [message, setMessage] = useState([
     { message: "Hello Brother", key: "1" },
-    { message: "Welcome to mumbai  knsdlfk", key: "2" },
+    { message: "Welcome to mumbai", key: "2" },
     { message: "Hello Friend", key: "3" },
     { message: "Hello Friend", key: "4" },
     { message: "Hello Friend", key: "5" },
@@ -35,12 +35,12 @@ export default function SearchScreen({ navigation }) {
           name="search"
           size={24}
           color="#ff0048"
-          style={{ bottom: 10 }}
+          style={{ bottom: hp("2.2%") }}
         />
         <TextInput
           textAlign="center"
           style={{
-            width: "70%",
+            width: "80%",
             height: hp("5%"),
             backgroundColor: "#FCF3CF",
             marginLeft: 10,
@@ -96,9 +96,9 @@ export default function SearchScreen({ navigation }) {
                   <Text
                     numberOfLines={3}
                     style={{
-                      fontSize: 10,
+                      fontSize: 14,
                       position: "absolute",
-                      top: 40,
+                      top: 50,
                       left: 100,
                       marginRight: wp("35%"),
                     }}
@@ -118,10 +118,10 @@ export default function SearchScreen({ navigation }) {
 const styles = StyleSheet.create({
   headerContainer: {
     backgroundColor: "#F7DC6F",
-    height: hp("18%"),
+    height: hp("15%"),
     width: wp("100%"),
-    borderBottomRightRadius: 40,
-    borderBottomLeftRadius: 40,
+    borderBottomRightRadius: 30,
+    borderBottomLeftRadius: 30,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "flex-end",

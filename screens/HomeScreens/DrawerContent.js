@@ -41,7 +41,9 @@ export default function DrawerContent(props) {
               }}
             >
               <Switch value={true} />
-              <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+              <Text
+                style={{ fontSize: 20, fontWeight: "bold", marginLeft: 10 }}
+              >
                 Dark Theme
               </Text>
             </View>
