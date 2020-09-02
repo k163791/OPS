@@ -24,13 +24,13 @@ import {
 
 export default function Intro({ navigation }) {
   const goToJoin = () => {
-    navigation.navigate("Join");
+    navigation.navigate("Join", { username: "Vendor" });
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.backContainer}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons name="ios-arrow-up" size={hp("4%")} />
         </TouchableOpacity>
       </View>

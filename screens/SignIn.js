@@ -19,7 +19,11 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 
-export default function SignIn({ navigation }) {
+export default function SignIn({ navigation, route }) {
+  const nextScreen = () => {
+    navigation.navigate("Home", { username: route.params.username });
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.backContainer}>
@@ -43,7 +47,7 @@ export default function SignIn({ navigation }) {
             placeholderTextColor="#F8C471"
             style={styles.inputStyle}
           />
-          <TouchableOpacity style={styles.btnContainer}>
+          <TouchableOpacity onPress={nextScreen} style={styles.btnContainer}>
             <Text style={styles.btnText}>continue</Text>
           </TouchableOpacity>
           <Text style={{ marginVertical: 15, fontSize: hp("1.8%") }}>

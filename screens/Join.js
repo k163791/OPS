@@ -18,17 +18,23 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 
-export default function Join({ navigation }) {
+export default function Join({ navigation, route }) {
   const goToSignIn = () => {
-    navigation.navigate("SignIn");
+    navigation.navigate("SignIn", { username: route.params.username });
   };
 
   const goToSignUp = () => {
-    navigation.navigate("SignUp");
+    navigation.navigate("SignUp", { username: route.params.username });
   };
 
   const goToHome = () => {
-    navigation.navigate("Home");
+    console.log(route.params.username);
+    navigation.navigate("Home", { username: route.params.username });
+  };
+
+  const hideShowView = () => {
+    if (route.params.username === "Client") return true;
+    else return false;
   };
 
   return (
@@ -65,11 +71,13 @@ export default function Join({ navigation }) {
           <Text style={styles.bottomBtnText}>Sign In</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.bottomBtnRight}>
-        <TouchableOpacity onPress={goToHome}>
-          <Text style={styles.bottomBtnText}>Skip</Text>
-        </TouchableOpacity>
-      </View>
+      {hideShowView() ? (
+        <View style={styles.bottomBtnRight}>
+          <TouchableOpacity onPress={goToHome}>
+            <Text style={styles.bottomBtnText}>Skip</Text>
+          </TouchableOpacity>
+        </View>
+      ) : null}
     </View>
   );
 }

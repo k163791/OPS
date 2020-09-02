@@ -19,7 +19,11 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 
-export default function SignUp({ navigation }) {
+export default function SignUp({ navigation, route }) {
+  const nextScreen = () => {
+    navigation.navigate("SignUpScreen1", { username: route.params.username });
+  };
+
   return (
     <View style={styles.container}>
       <View
@@ -50,20 +54,19 @@ export default function SignUp({ navigation }) {
           secureTextEntry={true}
           style={styles.inputStyle}
         />
-        <Text style={{ fontSize: hp("1.8%"), marginBottom: 30 }}>
+        <Text style={{ fontSize: hp("1.5%"), marginBottom: 30 }}>
           Combine upper and lowercase letters and numbers
         </Text>
-        <TouchableOpacity style={styles.btnContainer}>
+        <TouchableOpacity onPress={nextScreen} style={styles.btnContainer}>
           <Text style={styles.btnText}>continue</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.termsOfService}>
-        <Text style={{ fontSize: hp("2.2%") }}>
+        <Text style={{ fontSize: hp("1.5%") }}>
           By joining you agree to OPS's
         </Text>
         <TouchableOpacity>
-          <Text style={{ color: "lightblue", fontSize: hp("2.2%") }}>
-            {" "}
+          <Text style={{ color: "lightblue", fontSize: hp("1.5%") }}>
             Terms of Service
           </Text>
         </TouchableOpacity>
@@ -102,6 +105,9 @@ const styles = StyleSheet.create({
   },
   termsOfService: {
     flexDirection: "row",
-    margin: hp("2%") + wp("8.5%"),
+    justifyContent: "center",
+    alignItems: "center",
+    marginHorizontal: 20,
+    marginVertical: 20,
   },
 });

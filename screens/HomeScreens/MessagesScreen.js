@@ -17,7 +17,7 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 
-export default function MessagesScreen() {
+export default function MessagesScreen({ navigation, route }) {
   const [message, setMessage] = useState([
     { message: "Hello Brother", key: "1" },
     { message: "Welcome to mumbai  knsdlfk", key: "2" },

@@ -14,6 +14,8 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 
 export default function ServiceScreen({ navigation }) {
+  const user = "Client";
+
   return (
     <View style={styles.container}>
       <View style={styles.backContainer}>
@@ -97,7 +99,7 @@ export default function ServiceScreen({ navigation }) {
         style={{ height: hp("10%"), alignItems: "center", marginVertical: 10 }}
       >
         <TouchableOpacity
-          onPress={() => navigation.navigate("Join")}
+          onPress={() => navigation.navigate("Join", { username: "Client" })}
           style={{
             width: wp("90%"),
             height: hp("8%"),

@@ -12,14 +12,17 @@ import {
 } from "react-native";
 import { Feather, Ionicons, FontAwesome } from "@expo/vector-icons";
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import { createStackNavigator } from "@react-navigation/stack";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import DrawerContent from "./DrawerContent";
-const Drawer = createDrawerNavigator();
 
-function homeDrawer({ navigation }) {
+const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator();
+
+function homeDrawer({ navigation, route }) {
   const [gallery, setgallery] = useState([
     {
       image: {
@@ -66,7 +69,10 @@ function homeDrawer({ navigation }) {
         </TouchableOpacity>
 
         <Text style={styles.headerText}>OPS</Text>
-        <TouchableOpacity style={{ marginBottom: hp("3%") }}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Wallet")}
+          style={{ marginBottom: hp("3%") }}
+        >
           <Ionicons name="ios-wallet" size={hp("3.7%")} color="#ff0048" />
         </TouchableOpacity>
       </View>
@@ -93,10 +99,10 @@ function homeDrawer({ navigation }) {
           />
         </View>
         <View style={styles.titleContainer}>
-          <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+          <Text style={{ fontSize: hp("3%"), fontWeight: "bold" }}>
             Popular Services
           </Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => console.log(route.params.username)}>
             <Text style={{ top: 20, color: "#ff0048", fontWeight: "bold" }}>
               View All
             </Text>
@@ -130,8 +136,8 @@ function homeDrawer({ navigation }) {
                         <Image
                           source={item.image}
                           style={{
-                            height: 135,
-                            width: 120,
+                            height: hp("30%"),
+                            width: wp("35%"),
                           }}
                         />
                       </View>
@@ -149,7 +155,7 @@ function homeDrawer({ navigation }) {
         </View>
         <View style={{ height: 50 }}></View>
         <View style={styles.titleContainer}>
-          <Text style={{ fontSize: 12, fontWeight: "bold" }}>
+          <Text style={{ fontSize: hp("2.2%"), fontWeight: "bold" }}>
             Inspired by Your Browser History
           </Text>
           <TouchableOpacity>
@@ -237,51 +243,25 @@ function homeDrawer({ navigation }) {
   );
 }
 
-function helpAndSupport() {
+export default function HomeScreen(...props) {
   return (
-    <View style={{ alignContent: "center", flex: 1, justifyContent: "center" }}>
-      <Text>Help & Support</Text>
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <TouchableOpacity onPress={() => console.log(props)}>
+        <Text>asdasd</Text>
+      </TouchableOpacity>
     </View>
-  );
-}
+    // <Drawer.Navigator drawerContent={(props) => <DrawerContent {...props} />}>
+    //   <Drawer.Screen
+    //     name="Home"
+    //     component={homeDrawer}
+    //     imageIcon={{ uri: "https://i.redd.it/1ddlsj0xali51.jpg" }}
 
-function aboutUs() {
-  return (
-    <View style={{ flex: 1, alignContent: "center", justifyContent: "center" }}>
-      <Text>aboutUs</Text>
-    </View>
-  );
-}
-
-function shareApp() {
-  return (
-    <View style={{ flex: 1, alignContent: "center", justifyContent: "center" }}>
-      <Text>shareApp</Text>
-    </View>
-  );
-}
-
-function settings() {
-  return (
-    <View style={{ flex: 1, alignContent: "center", justifyContent: "center" }}>
-      <Text>settings</Text>
-    </View>
-  );
-}
-
-export default function HomeScreen() {
-  return (
-    <Drawer.Navigator drawerContent={(props) => <DrawerContent {...props} />}>
-      <Drawer.Screen
-        name="Home"
-        component={homeDrawer}
-        imageIcon={{ uri: "https://i.redd.it/1ddlsj0xali51.jpg" }}
-      />
-      <Drawer.Screen name="Help and Support" component={helpAndSupport} />
-      <Drawer.Screen name="About Us" component={aboutUs} />
-      <Drawer.Screen name="Share Application" component={shareApp} />
-      <Drawer.Screen name="Settings" component={settings} />
-    </Drawer.Navigator>
+    //   />
+    //   <Drawer.Screen name="Help and Support" component={helpAndSupport} />
+    //   <Drawer.Screen name="About Us" component={aboutUs} />
+    //   <Drawer.Screen name="Share Application" component={shareApp} />
+    //   <Drawer.Screen name="Settings" component={settings} />
+    // </Drawer.Navigator>
   );
 }
 

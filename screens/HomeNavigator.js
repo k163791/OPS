@@ -8,6 +8,7 @@ import SearchScreen from "./HomeScreens/SearchScreen";
 import NotificationScreen from "./HomeScreens/NotificationScreen";
 import MessagesScreen from "./HomeScreens/MessagesScreen";
 import AccountScreen from "./HomeScreens/AccountScreen";
+import VendorHome from "./HomeScreens/VendorHome";
 
 function SettingsScreen() {
   return (
@@ -19,7 +20,12 @@ function SettingsScreen() {
 
 const Tab = createBottomTabNavigator();
 
-export default function Homenavigator() {
+export default function Homenavigator({ navigation, route }) {
+  const checkName = () => {
+    if (route.params.username === "Client") return true;
+    else return false;
+  };
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -49,11 +55,27 @@ export default function Homenavigator() {
         inactiveTintColor: "gray",
       }}
     >
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Messages" component={MessagesScreen} />
-      <Tab.Screen name="Search" component={SearchScreen} />
-      <Tab.Screen name="Notification" component={NotificationScreen} />
-      <Tab.Screen name="Account" component={AccountScreen} />
+      {checkName() ? (
+        <Tab.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{ username: "Client" }}
+        />
+      ) : (
+        <Tab.Screen name="Home" component={VendorHome} />
+      )}
+      {checkName() ? (
+        <Tab.Screen name="Messages" component={MessagesScreen} />
+      ) : null}
+      {checkName() ? (
+        <Tab.Screen name="Search" component={SearchScreen} />
+      ) : null}
+      {checkName() ? (
+        <Tab.Screen name="Notification" component={NotificationScreen} />
+      ) : null}
+      {checkName() ? (
+        <Tab.Screen name={"Account"} component={AccountScreen} />
+      ) : null}
     </Tab.Navigator>
   );
 }

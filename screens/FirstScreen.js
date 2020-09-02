@@ -6,13 +6,96 @@ import {
 } from "react-native-responsive-screen";
 import { getAppLoadingLifecycleEmitter } from "expo/build/launch/AppLoading";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import Video from "react-native-video";
+import { Video } from "expo-av";
 
 export default function FirstScreen({ navigation }) {
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.headerContainer}>
-        {/* <Video source={require("../assets/background.mp4")} /> */}
+        <View>
+          <Video
+            source={require("../assets/background.mp4")}
+            rate={1.0}
+            volume={1.0}
+            isMuted={false}
+            resizeMode="cover"
+            shouldPlay
+            isLooping
+            style={{ width: wp("100%"), height: hp("70%") }}
+          />
+        </View>
+        <View
+          style={{
+            backgroundColor: "#fff",
+            borderRadius: 10,
+            elevation: 10,
+            height: hp("30%"),
+            width: wp("40%"),
+            position: "absolute",
+            top: hp("60%"),
+            left: wp("8%"),
+          }}
+        >
+          <TouchableOpacity onPress={() => navigation.navigate("MapScreen")}>
+            <Image
+              source={{ uri: "https://i.redd.it/lwduoatqpvjz.jpg" }}
+              style={{
+                height: hp("20%"),
+                width: wp("40%"),
+                marginBottom: 10,
+                borderTopRightRadius: 10,
+                borderTopLeftRadius: 10,
+              }}
+            />
+
+            <Text
+              style={{
+                alignSelf: "center",
+                fontWeight: "bold",
+                fontSize: hp("2.5%"),
+                textAlign: "center",
+              }}
+            >
+              Find a Service
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View
+          style={{
+            backgroundColor: "#fff",
+            borderRadius: 10,
+            elevation: 10,
+            height: hp("30%"),
+            width: wp("40%"),
+            position: "absolute",
+            top: hp("60%"),
+            left: wp("55%"),
+          }}
+        >
+          <TouchableOpacity onPress={() => navigation.navigate("Intro")}>
+            <Image
+              source={{ uri: "https://i.redd.it/8rr9o5hakpg51.jpg" }}
+              style={{
+                height: hp("20%"),
+                width: wp("40%"),
+                marginBottom: 10,
+                borderTopRightRadius: 10,
+                borderTopLeftRadius: 10,
+              }}
+            />
+
+            <Text
+              style={{
+                alignSelf: "center",
+                fontWeight: "bold",
+                fontSize: hp("2.5%"),
+                textAlign: "center",
+              }}
+            >
+              Become a Vendor
+            </Text>
+          </TouchableOpacity>
+        </View>
         <View style={styles.signInContainer}>
           <View style={styles.signInCard}>
             <TouchableOpacity onPress={() => navigation.navigate("MapScreen")}>
@@ -82,8 +165,7 @@ export default function FirstScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   headerContainer: {
-    height: hp("70%"),
-    backgroundColor: "gold",
+    height: "70%",
   },
   btnContainer: {
     flexDirection: "row",
@@ -106,7 +188,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     elevation: 10,
     backgroundColor: "#fff",
-    top: hp("60%"),
+    top: hp("70%"),
   },
   bottomBtnLeft: {
     position: "absolute",

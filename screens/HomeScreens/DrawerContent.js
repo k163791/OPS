@@ -18,7 +18,8 @@ export default function DrawerContent(props) {
     <View
       style={{
         flex: 1,
-        backgroundColor: "#F7DC6F",
+        backgroundColor: "#FAD7A0",
+        backfaceVisibility: "hidden",
       }}
     >
       <DrawerContentScrollView {...props}>
@@ -40,7 +41,7 @@ export default function DrawerContent(props) {
                 paddingHorizontal: 16,
               }}
             >
-              <Switch value={true} />
+              <Switch value={true} color="#ff0048" />
               <Text
                 style={{ fontSize: 20, fontWeight: "bold", marginLeft: 10 }}
               >
