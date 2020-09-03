@@ -18,6 +18,9 @@ import SignUpScreen2 from "./screens/SignUpScreen2";
 import SignUpScreen3 from "./screens/SignUpScreen3";
 import SignUpScreen4 from "./screens/SignUpScreen4";
 import SignUpScreen5 from "./screens/SignUpScreen5";
+import VendorHome from "./screens/VendorHomeNavigator";
+import VendorHomenavigator from "./screens/VendorHomeNavigator";
+
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -43,6 +46,7 @@ export default function App() {
         <Stack.Screen name="SignUpScreen3" component={SignUpScreen3} />
         <Stack.Screen name="SignUpScreen4" component={SignUpScreen4} />
         <Stack.Screen name="SignUpScreen5" component={SignUpScreen5} />
+        <Stack.Screen name="VendorHome" component={VendorHomenavigator} />
       </Stack.Navigator>
     </NavigationContainer>
   );

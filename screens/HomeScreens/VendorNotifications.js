@@ -17,7 +17,7 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 
-export default function NotificationScreen() {
+export default function VendorNotificationScreen() {
   const [message, setMessage] = useState([
     { message: "Hello Brother", key: "1" },
     {
@@ -26,11 +26,6 @@ export default function NotificationScreen() {
     },
     { message: "Hello Friend", key: "3" },
     { message: "Hello Friend", key: "4" },
-    { message: "Hello Friend", key: "5" },
-    { message: "Hello Friend", key: "6" },
-    { message: "Hello Friend", key: "7" },
-    { message: "Hello Friend", key: "8" },
-    { message: "Hello Friend", key: "9" },
   ]);
 
   return (
@@ -41,7 +36,7 @@ export default function NotificationScreen() {
           <Text
             style={{
               fontWeight: "bold",
-              color: "#ff0048",
+              color: "black",
               fontSize: hp("3%"),
               left: wp("12%"),
               marginBottom: hp("3%"),
@@ -57,7 +52,7 @@ export default function NotificationScreen() {
             style={{
               fontSize: hp("2.2%"),
               fontWeight: "bold",
-              color: "#ff0048",
+              color: "#000",
             }}
           >
             Earlier
@@ -124,7 +119,7 @@ export default function NotificationScreen() {
 
 const styles = StyleSheet.create({
   headerContainer: {
-    backgroundColor: "#F7DC6F",
+    backgroundColor: "#ff0048",
     height: hp("15%"),
     width: wp("100%"),
     borderBottomRightRadius: 30,

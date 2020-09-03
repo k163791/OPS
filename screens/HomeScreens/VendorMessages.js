@@ -17,53 +17,33 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 
-export default function NotificationScreen() {
+export default function VendorMessages({ navigation, route }) {
   const [message, setMessage] = useState([
     { message: "Hello Brother", key: "1" },
-    {
-      message: "Welcome to mumbai ",
-      key: "2",
-    },
-    { message: "Hello Friend", key: "3" },
-    { message: "Hello Friend", key: "4" },
-    { message: "Hello Friend", key: "5" },
-    { message: "Hello Friend", key: "6" },
-    { message: "Hello Friend", key: "7" },
-    { message: "Hello Friend", key: "8" },
-    { message: "Hello Friend", key: "9" },
+    { message: "In This Shirt", key: "2" },
   ]);
 
   return (
     <View style={{ flex: 1, marginBottom: 10 }}>
       <View style={styles.headerContainer}>
-        <Text style={styles.headerText}>Notifications</Text>
-        <TouchableOpacity>
+        <TouchableOpacity style={{ marginBottom: hp("3%") }}>
           <Text
             style={{
               fontWeight: "bold",
-              color: "#ff0048",
+              color: "#000",
               fontSize: hp("3%"),
-              left: wp("12%"),
-              marginBottom: hp("3%"),
             }}
           >
             Edit
           </Text>
         </TouchableOpacity>
-      </View>
-      <View style={{ margin: 10 }}>
-        <TouchableOpacity>
-          <Text
-            style={{
-              fontSize: hp("2.2%"),
-              fontWeight: "bold",
-              color: "#ff0048",
-            }}
-          >
-            Earlier
-          </Text>
+
+        <Text style={styles.headerText}>Inbox</Text>
+        <TouchableOpacity style={{ marginBottom: hp("3%") }}>
+          <Feather name="settings" size={hp("3%")} color="black" />
         </TouchableOpacity>
       </View>
+
       <SafeAreaView
         style={{ flex: 1, marginVertical: 10, marginHorizontal: 10 }}
       >
@@ -88,29 +68,42 @@ export default function NotificationScreen() {
                     style={{ height: 70, width: 70, borderRadius: 50 }}
                   />
                   <Text
-                    numberOfLines={3}
                     style={{
                       position: "absolute",
                       top: 0,
                       left: 100,
                       top: 20,
-                      fontSize: hp("2%"),
-                      marginRight: 80,
+                      fontSize: 14,
+                      fontWeight: "bold",
                     }}
                   >
                     {item.message}
                   </Text>
                   <Text
                     style={{
-                      position: "absolute",
-                      bottom: 0,
-                      left: 100,
-                      fontSize: hp("1.9%"),
+                      fontSize: 14,
                       fontWeight: "bold",
-                      marginBottom: 10,
+                      position: "absolute",
+                      top: 0,
+                      right: 0,
+                      marginRight: 10,
                     }}
                   >
-                    45 mins ago
+                    April 23, 2020
+                  </Text>
+                  <Text
+                    numberOfLines={3}
+                    style={{
+                      fontSize: 14,
+                      position: "absolute",
+                      top: 40,
+                      left: 100,
+                      marginRight: wp("35%"),
+                    }}
+                  >
+                    This is the message, jhasdjha ajsdhajshd jhasgdahsd
+                    asghdjhasgd jashdhsd aksjdhkajshd kjashdkjashdk akjsdhk
+                    asdnasjdn asldjalsk jdlkasj dlakjslksdj
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -124,13 +117,13 @@ export default function NotificationScreen() {
 
 const styles = StyleSheet.create({
   headerContainer: {
-    backgroundColor: "#F7DC6F",
+    backgroundColor: "#ff0048",
     height: hp("15%"),
     width: wp("100%"),
     borderBottomRightRadius: 30,
     borderBottomLeftRadius: 30,
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "space-around",
     alignItems: "flex-end",
   },
   headerText: {

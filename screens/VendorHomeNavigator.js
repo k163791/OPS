@@ -3,12 +3,12 @@ import { View, Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons, FontAwesome } from "@expo/vector-icons";
-import HomeScreen from "./HomeScreens/HomeScreen";
-import SearchScreen from "./HomeScreens/SearchScreen";
-import NotificationScreen from "./HomeScreens/NotificationScreen";
-import MessagesScreen from "./HomeScreens/MessagesScreen";
-import AccountScreen from "./HomeScreens/AccountScreen";
+
 import VendorHome from "./HomeScreens/VendorHome";
+import VendorMessages from "./HomeScreens/VendorMessages";
+import VendorSales from "./HomeScreens/VendorSales";
+import VendorNotifications from "./HomeScreens/VendorNotifications";
+import VendorAccount from "./HomeScreens/VendorAccount";
 
 function SettingsScreen() {
   return (
@@ -20,7 +20,7 @@ function SettingsScreen() {
 
 const Tab = createBottomTabNavigator();
 
-export default function Homenavigator({ navigation, route }) {
+export default function VendorHomenavigator({ navigation, route }) {
   const checkName = () => {
     if (route.params.username === "Client") return true;
     else return false;
@@ -40,9 +40,9 @@ export default function Homenavigator({ navigation, route }) {
             iconName = "user";
           } else if (route.name === "Messages") {
             iconName = "send";
-          } else if (route.name === "Search") {
-            iconName = "search";
-          } else if (route.name === "Notification") {
+          } else if (route.name === "Manage Sales") {
+            iconName = "sellsy";
+          } else if (route.name === "Notifications") {
             iconName = "bell";
           }
 
@@ -55,11 +55,11 @@ export default function Homenavigator({ navigation, route }) {
         inactiveTintColor: "gray",
       }}
     >
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Messages" component={MessagesScreen} />
-      <Tab.Screen name="Search" component={SearchScreen} />
-      <Tab.Screen name="Notification" component={NotificationScreen} />
-      <Tab.Screen name={"Account"} component={AccountScreen} />
+      <Tab.Screen name="Home" component={VendorHome} />
+      <Tab.Screen name="Messages" component={VendorMessages} />
+      <Tab.Screen name="Manage Sales" component={VendorSales} />
+      <Tab.Screen name="Notifications" component={VendorNotifications} />
+      <Tab.Screen name="Account" component={VendorAccount} />
     </Tab.Navigator>
   );
 }

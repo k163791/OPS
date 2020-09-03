@@ -243,25 +243,15 @@ function homeDrawer({ navigation, route }) {
   );
 }
 
-export default function HomeScreen(...props) {
+export default function HomeScreen({ navigation }) {
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <TouchableOpacity onPress={() => console.log(props)}>
-        <Text>asdasd</Text>
-      </TouchableOpacity>
-    </View>
-    // <Drawer.Navigator drawerContent={(props) => <DrawerContent {...props} />}>
-    //   <Drawer.Screen
-    //     name="Home"
-    //     component={homeDrawer}
-    //     imageIcon={{ uri: "https://i.redd.it/1ddlsj0xali51.jpg" }}
-
-    //   />
-    //   <Drawer.Screen name="Help and Support" component={helpAndSupport} />
-    //   <Drawer.Screen name="About Us" component={aboutUs} />
-    //   <Drawer.Screen name="Share Application" component={shareApp} />
-    //   <Drawer.Screen name="Settings" component={settings} />
-    // </Drawer.Navigator>
+    <Drawer.Navigator drawerContent={(props) => <DrawerContent {...props} />}>
+      <Drawer.Screen
+        name="Home"
+        component={homeDrawer}
+        imageIcon={{ uri: "https://i.redd.it/1ddlsj0xali51.jpg" }}
+      />
+    </Drawer.Navigator>
   );
 }
 

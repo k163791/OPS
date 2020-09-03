@@ -79,7 +79,7 @@ export default function SignUpScreen5({ navigation }) {
         }}
       >
         <TouchableOpacity
-          //   onPress={() => navigation.navigate("SignUpScreen3")}
+          onPress={() => navigation.navigate("VendorHome")}
           style={{
             height: hp("8%"),
             width: wp("40%"),
