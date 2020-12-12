@@ -6,7 +6,13 @@ import {
 } from "react-native-responsive-screen";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-export default function SingUpScreen1({ navigation }) {
+export default function SingUpScreen1({ navigation, route }) {
+
+  const test = () => {
+    console.log(route.params.vendor);
+  }
+
+
   return (
     <View style={styles.container}>
       <View style={{ height: heightPercentageToDP("30%") }}></View>
@@ -36,7 +42,8 @@ export default function SingUpScreen1({ navigation }) {
         }}
       >
         <TouchableOpacity
-          onPress={() => navigation.navigate("SignUpScreen2")}
+          onPress={test}
+          // onPress={() => navigation.navigate("SignUpScreen2")}
           style={{
             height: heightPercentageToDP("8%"),
             width: widthPercentageToDP("40%"),

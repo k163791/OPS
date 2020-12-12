@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from  "axios";
 import {
   View,
   Text,
@@ -18,11 +19,39 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import { APP_URL } from "./constant_vars";
 
 export default function SignIn({ navigation, route }) {
+
+  const [ email, setEmail ] = useState("");
+  const [ password, setPassword ] = useState("");
+
   const nextScreen = () => {
     navigation.navigate("Home", { username: route.params.username });
   };
+
+
+  const signinVendor = () => {
+    if(!email.length || !password.length) {
+      alert('Please fill all fileds to continue');
+      return;
+    }
+
+    axios.post(APP_URL + "user/login", {
+      email: email,
+      password: password,
+    }).then(res => {
+      console.log('Response: ',res)
+    }).catch(err => {
+      alert(`Error: ${err}`)
+    })
+    // sarfarazahmedkhankhan@gmail.com
+  }
+
+  const signinUser = () => {
+
+  }
+
 
   return (
     <View style={styles.container}>
@@ -40,15 +69,20 @@ export default function SignIn({ navigation, route }) {
             placeholder="Email or Username"
             placeholderTextColor="#F8C471"
             style={styles.inputStyle}
+            onChangeText={ email => setEmail(email) }
           />
           <TextInput
             placeholder="Password"
             secureTextEntry={true}
             placeholderTextColor="#F8C471"
             style={styles.inputStyle}
+            onChangeText={password => setPassword(password) }
           />
+          <TouchableOpacity onPress={signinVendor} style={styles.btnContainer}>
+            <Text style={styles.btnText}>continue as vendor</Text>
+          </TouchableOpacity>
           <TouchableOpacity onPress={nextScreen} style={styles.btnContainer}>
-            <Text style={styles.btnText}>continue</Text>
+            <Text style={styles.btnText}>continue as user</Text>
           </TouchableOpacity>
           <Text style={{ marginVertical: 15, fontSize: hp("1.8%") }}>
             or via social networks
