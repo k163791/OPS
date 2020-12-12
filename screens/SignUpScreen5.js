@@ -10,6 +10,7 @@ import {
   CheckBox,
   ScrollView,
   Image,
+  ActivityIndicator,
 } from "react-native";
 import { Ionicons, FontAwesome, Feather } from "@expo/vector-icons";
 import {
@@ -18,6 +19,7 @@ import {
 } from "react-native-responsive-screen";
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
+import { APP_URL } from "./constant_vars";
 
 export default function SignUpScreen5({ navigation, route }) {
 
@@ -31,15 +33,59 @@ export default function SignUpScreen5({ navigation, route }) {
   const [image2, setImage2] = useState(null)
   const [image3, setImage3] = useState(null)
 
+  const [ isSubmit, setIsSubmit ] = useState(false)
 
   const Submit = () => {
     try {
-      console.log(gallery);
+      // console.log(gallery);
       let vendor = route.params.vendor;
+      // console.log(vendor);
       if(gallery.length) {
         vendor.gallery = gallery;
       }
 
+
+      // console.log(vendor);
+      setIsSubmit(true)
+      axios.post(APP_URL + "vendor/register", {
+          personal: {
+            name: vendor.name,
+            shopName: vendor.shopName,
+            country: vendor.country,
+            phoneNumber: vendor.phoneNumber,
+            postalCode: vendor.postalCode,
+            delivery: vendor.delivery,
+            takeaway: vendor.takeaway,
+            email: vendor.email,
+            city: vendor.city,
+            profileImage: vendor.profileImage,
+            password: vendor.password,
+          }
+      }).then(res => {
+        // console.log('response: ', res.data.result);
+        axios.put(APP_URL + "vendor/update/", {
+          description: vendor.description,
+          gallery: vendor.gallery,
+          warehouse: {
+            area: vendor.area,
+            location: vendor.location,
+            address: vendor.address
+          }
+        },
+        {
+        headers: { Authorization: `Bearer ${res.data.result.token}`}
+      }).then(res1 => {
+          setIsSubmit(false)
+          // console.log('now: ',res.data.result);
+          navigation.navigate('VendorHome', { vendor: res.data.result })
+        }).catch(err => {
+          alert(err);
+          console.log('Error: ', err);
+        })
+      }).catch(err => {
+        setIsSubmit(false)
+        alert(err);
+      })
 
     } catch(e) {
       throw e;
@@ -58,9 +104,9 @@ export default function SignUpScreen5({ navigation, route }) {
 
       if (!result.cancelled) {
         // setProfileImage(result.uri);
-        let temp = gallery;
-        temp.push(result.uri)
-        setGallery(temp)
+        // let temp = gallery;
+        // temp.concat(result.uri)
+        setGallery([...gallery, result.uri])
         if(key === 1) {
           setDisabled1(true)
           setImage1(result.uri)
@@ -188,15 +234,24 @@ export default function SignUpScreen5({ navigation, route }) {
             justifyContent: "center",
           }}
         >
-          <Text
-            style={{
-              color: "#fff",
-              fontSize: hp("3%"),
-              textAlign: "center",
-            }}
-          >
-            Next
-          </Text>
+        {
+          isSubmit ?
+          (
+            <ActivityIndicator size="large" color="white"/>
+          ):
+          (
+            <Text
+              style={{
+                color: "#fff",
+                fontSize: hp("3%"),
+                textAlign: "center",
+              }}
+            >
+              Next
+            </Text>
+          )
+        }
+
         </TouchableOpacity>
       </View>
       <View

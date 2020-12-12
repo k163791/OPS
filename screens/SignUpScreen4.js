@@ -22,10 +22,11 @@ export default function SignUpScreen4({ navigation, route }) {
 
   const Submit = () => {
     try {
-      let vendor = route.params.description;
+      let vendor = route.params.vendor;
       if(description.length) {
         vendor.description = description;
       }
+
 
       navigation.navigate('SignUpScreen5', { vendor: vendor })
     } catch(e) {

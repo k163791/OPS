@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -26,6 +26,9 @@ import DrawerContent from "./VendorDrawerContent";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
+
+import axios from "axios";
+import { APP_URL } from "../constant_vars"
 
 function homeDrawer({ navigation, route }) {
   const [gallery, setgallery] = useState([
@@ -62,6 +65,15 @@ function homeDrawer({ navigation, route }) {
       key: "4",
     },
   ]);
+
+
+  useEffect(() => {
+    console.log(route.params);
+    // axios.get(APP_URL + "vendor/" + route.params.vendor._id)
+    // .then(res => {
+    //   console.log('Response: ', res.data);
+    // })
+  }, [])
 
   return (
     <View style={{ flex: 1, marginBottom: 20 }}>
@@ -493,7 +505,13 @@ function homeDrawer({ navigation, route }) {
   );
 }
 
-export default function VendorHome({ navigation }) {
+export default function VendorHome({ navigation, route, vendor }) {
+
+  useEffect(() => {
+    console.log('route: ',route)
+    console.log("vendor: ", vendor)
+  }, [])
+
   return (
     <Drawer.Navigator drawerContent={(props) => <DrawerContent {...props} />}>
       <Drawer.Screen
