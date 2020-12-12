@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -16,7 +16,31 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 
-export default function SignUpScreen3({ navigation }) {
+export default function SignUpScreen3({ navigation, route }) {
+
+  const [ address, setAddress ] = useState("")
+  const [ area, setArea ] = useState("")
+  const [ location, setLocation ] = useState("")
+
+  const Submit = () => {
+    try {
+      let warehouse = {
+        area: area,
+        location: location,
+        address: address
+      }
+
+      let vendor = route.params.vendor;
+      vendor.warehouse = warehouse;
+
+      navigation.navigate('SignUpScreen4', { vendor: vendor })
+
+    } catch (e) {
+      throw e;
+    }
+  }
+
+
   return (
     <View style={styles.container}>
       <View style={styles.backContainer}>
@@ -49,6 +73,8 @@ export default function SignUpScreen3({ navigation }) {
             textAlign="center"
             style={styles.inputStyle}
             placeholder="Enter your shop's name"
+            value={address}
+            onChangeText={ address => setAddress(address) }
           />
         </View>
         <View style={styles.itemContainer}>
@@ -60,6 +86,8 @@ export default function SignUpScreen3({ navigation }) {
             textAlign="center"
             style={styles.inputStyle}
             placeholder="Enter your shop's name"
+            value={area}
+            onChangeText={ area => setArea(area) }
           />
         </View>
         <View style={styles.itemContainer}>
@@ -71,6 +99,8 @@ export default function SignUpScreen3({ navigation }) {
             textAlign="center"
             style={styles.inputStyle}
             placeholder="Enter your shop's name"
+            value={location}
+            onChangeText={ location => setLocation(location) }
           />
         </View>
       </ScrollView>
@@ -83,7 +113,8 @@ export default function SignUpScreen3({ navigation }) {
         }}
       >
         <TouchableOpacity
-          onPress={() => navigation.navigate("SignUpScreen4")}
+          // onPress={() => navigation.navigate("SignUpScreen4")}
+          onPress={Submit}
           style={{
             height: hp("8%"),
             width: wp("40%"),

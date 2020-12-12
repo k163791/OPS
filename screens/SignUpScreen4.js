@@ -1,4 +1,4 @@
-import React from "react";
+import React,{ useState } from "react";
 import {
   View,
   Text,
@@ -16,7 +16,23 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 
-export default function SignUpScreen4({ navigation }) {
+export default function SignUpScreen4({ navigation, route }) {
+
+  const [ description, setDescription ] = useState("")
+
+  const Submit = () => {
+    try {
+      let vendor = route.params.description;
+      if(description.length) {
+        vendor.description = description;
+      }
+
+      navigation.navigate('SignUpScreen5', { vendor: vendor })
+    } catch(e) {
+      throw e;
+    }
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.backContainer}>
@@ -49,6 +65,8 @@ export default function SignUpScreen4({ navigation }) {
             multiline={true}
             numberOfLines={10}
             style={styles.inputStyle}
+            value={description}
+            onChangeText={description => setDescription(description) }
           />
         </View>
       </ScrollView>
@@ -61,7 +79,8 @@ export default function SignUpScreen4({ navigation }) {
         }}
       >
         <TouchableOpacity
-          onPress={() => navigation.navigate("SignUpScreen5")}
+          // onPress={() => navigation.navigate("SignUpScreen5")}
+          onPress={Submit}
           style={{
             height: hp("8%"),
             width: wp("40%"),

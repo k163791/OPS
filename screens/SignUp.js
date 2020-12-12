@@ -71,7 +71,6 @@ export default function SignUp({ navigation, route }) {
     resetForm()
     nextScreen(vendorData);
 
-
   }
 
   const signUpUser = () => {
@@ -86,7 +85,7 @@ export default function SignUp({ navigation, route }) {
     }
 
     let fullName = username.split(" ")
-    console.log(fullName)
+    console.log(fullName[0], fullName[1])
     setUserSubmit(true)
     axios.post(APP_URL + "user/register", {
       email: email,
@@ -155,6 +154,17 @@ export default function SignUp({ navigation, route }) {
             )
           }
         </TouchableOpacity>
+        <TouchableOpacity onPress={SignUpVendor} style={styles.btnContainer}>
+          {
+            vendorSubmit ?
+            (
+                <ActivityIndicator size="large" color="white" />
+            ):
+            (
+                <Text style={styles.btnText}>continue as vendor</Text>
+            )
+          }
+        </TouchableOpacity>
       </View>
       <View style={styles.termsOfService}>
         <Text style={{ fontSize: hp("1.5%") }}>
@@ -190,6 +200,7 @@ const styles = StyleSheet.create({
     backgroundColor: "gold",
     paddingVertical: hp("2%"),
     paddingHorizontal: wp("1%"),
+    marginVertical: hp('0.5%'),
   },
   btnText: {
     fontSize: hp("2.6%"),

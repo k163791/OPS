@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
   Picker,
   CheckBox,
   ScrollView,
+  Image,
 } from "react-native";
 import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import {
@@ -16,7 +17,57 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 
-export default function SignUpScreen2({ navigation }) {
+import * as ImagePicker from 'expo-image-picker';
+
+export default function SignUpScreen2({ navigation, route }) {
+
+  const [profileImage, setProfileImage] = useState(null)
+  const [ shopName, setShopName ] = useState("");
+  const [ phoneNumber, setPhoneNumber ] = useState("");
+  const [ selectedValue, setSelectedValue ] = useState("pakistan");
+  const [ delivery, setDelivery ] = useState(false)
+  const [ takeaway, setTakeaway ] = useState(false)
+  const [ selectedCity, setSelectedCity] = useState("karachi")
+  const [ postalCode, setPostalCode ] = useState("");
+
+  const onSelectImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    // console.log('result: ',result);
+
+    if (!result.cancelled) {
+      setProfileImage(result.uri);
+    }
+  }
+
+
+  const Submit = () => {
+    try {
+      console.log(route.params.vendor);
+      let vendor = route.params.vendor;
+      vendor.shopName = shopName;
+      vendor.phoneNumber = phoneNumber;
+      vendor.country = selectedValue;
+      vendor.city = selectedCity;
+      vendor.delivery = delivery;
+      vendor.takeaway = takeaway;
+      vendor.postalCode = postalCode;
+
+      // console.log('Vendor: ', vendor);
+      navigation.navigate("SignUpScreen3", { vendor: vendor })
+
+    } catch (e) {
+      throw e;
+    }
+
+  }
+
+
   return (
     <View style={styles.container}>
       <View style={styles.backContainer}>
@@ -46,17 +97,37 @@ export default function SignUpScreen2({ navigation }) {
               justifyContent: "space-evenly",
               alignItems: "center",
             }}
+
+            onPress={onSelectImage}
           >
-            <FontAwesome name="user" size={40} color="#ff0048" />
-            <Text
-              style={{
-                fontSize: hp("1.2%"),
-                position: "absolute",
-                bottom: hp("1%"),
-              }}
-            >
-              Add Photo
-            </Text>
+
+          {
+            profileImage !== null ?
+            (
+                <Image source={{ uri: profileImage }}
+                style={{
+                  width: 70,
+                  height: 70,
+                  borderRadius: 50,
+                }} />
+            ):
+            (
+              <View>
+                <FontAwesome name="user" size={40} color="#ff0048" />
+                <Text
+                  style={{
+                    fontSize: hp("1.2%"),
+                    position: "absolute",
+                    bottom: hp("1%"),
+                  }}
+                >
+                  Add Photo
+                </Text>
+              </View>
+            )
+          }
+
+
           </TouchableOpacity>
         </View>
       </View>
@@ -70,6 +141,8 @@ export default function SignUpScreen2({ navigation }) {
             textAlign="center"
             style={styles.inputStyle}
             placeholder="Enter your shop's name"
+            value={shopName}
+            onChangeText={ shopName => setShopName(shopName) }
           />
         </View>
 
@@ -91,16 +164,21 @@ export default function SignUpScreen2({ navigation }) {
                 marginRight: 10,
                 borderRadius: 10,
               }}
+              readonly
             />
             <TextInput
               textAlign="center"
               placeholder="3323696481"
+              keyboardType="numeric"
+              maxLength={10}
               style={{
                 width: wp("37%"),
                 height: hp("6%"),
                 backgroundColor: "#eee",
                 borderRadius: 10,
               }}
+              value={phoneNumber}
+              onChangeText={phoneNumber => setPhoneNumber(phoneNumber) }
             />
           </View>
         </View>
@@ -110,14 +188,14 @@ export default function SignUpScreen2({ navigation }) {
             <Text style={styles.star}>*</Text>
           </View>
           <Picker
-            style={{
-              height: 50,
-              width: 50,
-            }}
+          selectedValue={selectedValue}
+          style={{ height: 50, width: 50 }}
+          onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
           >
             <Picker.Item label="Pakistan" value="pakistan" />
-            <Picker.Item label="Afghanistan" value="Afghanistan" />
-          </Picker>
+            <Picker.Item label="Afghanistan" value="afghanistan" />
+        </Picker>
+
         </View>
 
         <View style={styles.itemContainer}>
@@ -125,14 +203,17 @@ export default function SignUpScreen2({ navigation }) {
             <Text style={styles.headingStyle}>City</Text>
             <Text style={styles.star}>*</Text>
           </View>
+
           <Picker
             style={{
               height: 50,
               width: 50,
             }}
+            selectedValue={selectedCity}
+            onValueChange={(itemValue, itemIndex) => setSelectedCity(itemValue)}
           >
-            <Picker.Item label="Karachi" value="pakistan" />
-            <Picker.Item label="Lahore" value="Afghanistan" />
+            <Picker.Item label="Karachi" value="karachi" />
+            <Picker.Item label="Lahore" value="lahore" />
           </Picker>
         </View>
 
@@ -145,6 +226,8 @@ export default function SignUpScreen2({ navigation }) {
             textAlign="center"
             style={styles.inputStyle}
             placeholder="Postal/Zip Code`"
+            value={postalCode}
+            onChangeText={postalCode => setPostalCode(postalCode) }
           />
         </View>
 
@@ -153,7 +236,11 @@ export default function SignUpScreen2({ navigation }) {
             <Text style={styles.headingStyle}>Delivery</Text>
             <Text style={styles.star}>*</Text>
           </View>
-          <CheckBox style={{ color: "#ff0048" }} />
+          <CheckBox
+            style={{ color: "#ff0048" }}
+            value={delivery}
+            onValueChange={setDelivery}
+            />
         </View>
 
         <View style={styles.itemContainer}>
@@ -161,7 +248,11 @@ export default function SignUpScreen2({ navigation }) {
             <Text style={styles.headingStyle}>Take Away</Text>
             <Text style={styles.star}>*</Text>
           </View>
-          <CheckBox style={{ color: "#ff0048" }} />
+          <CheckBox
+            style={{ color: "#ff0048" }}
+            value={takeaway}
+            onValueChange={setTakeaway}
+            />
         </View>
       </ScrollView>
 
@@ -173,7 +264,8 @@ export default function SignUpScreen2({ navigation }) {
         }}
       >
         <TouchableOpacity
-          onPress={() => navigation.navigate("SignUpScreen3")}
+          // onPress={() => navigation.navigate("SignUpScreen3")}
+          onPress={Submit}
           style={{
             height: hp("8%"),
             width: wp("40%"),

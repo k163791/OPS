@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, StatusBar, Picker } from "react-native";
 import {
   heightPercentageToDP,
@@ -8,10 +8,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function SingUpScreen1({ navigation, route }) {
 
-  const test = () => {
-    console.log(route.params.vendor);
-  }
-
+  const [selectedValue, setSelectedValue] = useState("personal")
 
   return (
     <View style={styles.container}>
@@ -29,10 +26,14 @@ export default function SingUpScreen1({ navigation, route }) {
         >
           Store Type
         </Text>
-        <Picker selectedValue="Personal" style={{ height: 50, width: 50 }}>
-          <Picker.Item label="Personal" value="Personal" />
-          <Picker.Item label="Business" value="Business" />
-        </Picker>
+        <Picker
+        selectedValue={selectedValue}
+        style={{ height: 50, width: 150 }}
+        onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+        >
+          <Picker.Item label="Personal" value="personal" />
+          <Picker.Item label="Business" value="business" />
+      </Picker>
       </View>
       <View
         style={{
@@ -42,8 +43,7 @@ export default function SingUpScreen1({ navigation, route }) {
         }}
       >
         <TouchableOpacity
-          onPress={test}
-          // onPress={() => navigation.navigate("SignUpScreen2")}
+          onPress={() => navigation.navigate("SignUpScreen2", { vendor: route.params.vendor })}
           style={{
             height: heightPercentageToDP("8%"),
             width: widthPercentageToDP("40%"),
