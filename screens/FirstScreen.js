@@ -151,7 +151,10 @@ export default function FirstScreen({ navigation }) {
       </View>
       <View style={styles.bottomBtnLeft}>
         <TouchableOpacity>
-          <Text style={styles.bottomBtnText}>Sign In</Text>
+          <Text
+            style={styles.bottomBtnText}
+            onPress={() => navigation.navigate("SignIn")}
+          >Sign In</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.bottomBtnRight}>

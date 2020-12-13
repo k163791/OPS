@@ -3,7 +3,6 @@ import { View, Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons, FontAwesome } from "@expo/vector-icons";
-
 import VendorHome from "./HomeScreens/VendorHome";
 import VendorMessages from "./HomeScreens/VendorMessages";
 import VendorSales from "./HomeScreens/VendorSales";
@@ -22,11 +21,6 @@ const Tab = createBottomTabNavigator();
 
 export default function VendorHomenavigator({ navigation, route }) {
 
-
-  useEffect(() => {
-    console.log('vendor home nav: ',route.params);
-  }, [])
-
   const checkName = () => {
     if (route.params.username === "Client") return true;
     else return false;
@@ -34,6 +28,7 @@ export default function VendorHomenavigator({ navigation, route }) {
 
   return (
     <Tab.Navigator
+      value={route.params.vendor}
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
@@ -61,11 +56,11 @@ export default function VendorHomenavigator({ navigation, route }) {
         inactiveTintColor: "gray",
       }}
     >
-      <Tab.Screen name="Home" component={VendorHome} vendor={route.params.vendor} />
-      <Tab.Screen name="Messages" component={VendorMessages} />
-      <Tab.Screen name="Manage Sales" component={VendorSales} />
-      <Tab.Screen name="Notifications" component={VendorNotifications} />
-      <Tab.Screen name="Account" component={VendorAccount} />
+      <Tab.Screen name="Home" component={VendorHome} initialParams={route.params.vendor}/>
+      <Tab.Screen name="Messages" component={VendorMessages} initialParams={route.params.vendor}/>
+      <Tab.Screen name="Manage Sales" component={VendorSales} initialParams={route.params.vendor}/>
+      <Tab.Screen name="Notifications" component={VendorNotifications} initialParams={route.params.vendor}/>
+      <Tab.Screen name="Account" component={VendorAccount} initialParams={route.params.vendor}/>
     </Tab.Navigator>
   );
 }

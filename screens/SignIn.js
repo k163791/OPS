@@ -7,6 +7,7 @@ import {
   StatusBar,
   TouchableOpacity,
   TextInput,
+  ActivityIndicator,
 } from "react-native";
 import {
   Feather,
@@ -25,11 +26,17 @@ export default function SignIn({ navigation, route }) {
 
   const [ email, setEmail ] = useState("");
   const [ password, setPassword ] = useState("");
+  const [ userSubmit, setUserSubmit ] = useState(false);
+  const [ vendorSubmit, setVendorSubmit ] = useState(false);
 
   const nextScreen = () => {
     navigation.navigate("Home", { username: route.params.username });
   };
 
+  const resetForm = () => {
+    setEmail("");
+    setPassword("");
+  }
 
   const signinVendor = () => {
     if(!email.length || !password.length) {
@@ -37,11 +44,15 @@ export default function SignIn({ navigation, route }) {
       return;
     }
 
-    axios.post(APP_URL + "user/login", {
-      email: email,
+    setVendorSubmit(true)
+    axios.post(APP_URL + "vendor/login", {
+      email: email.toLowerCase(),
       password: password,
     }).then(res => {
-      console.log('Response: ',res)
+      setVendorSubmit(false)
+      resetForm()
+      // console.log('Response: ',res.data)
+      navigation.navigate("VendorHome", { vendor: res.data.result })
     }).catch(err => {
       alert(`Error: ${err}`)
     })
@@ -49,7 +60,23 @@ export default function SignIn({ navigation, route }) {
   }
 
   const signinUser = () => {
+    if(!email.length || !password.length) {
+      alert('Please fill all fileds to continue');
+      return;
+    }
 
+    setUserSubmit(true)
+    axios.post(APP_URL + "user/login", {
+      email: email,
+      password: password
+    }).then(res => {
+      // console.log('res: ', res.data)
+      setUserSubmit(false)
+      resetForm()
+      navigation.navigate("Home", { user: res.data.result })
+    }).catch(err => {
+      alert(`Error: ${err}`)
+    })
   }
 
 
@@ -70,6 +97,7 @@ export default function SignIn({ navigation, route }) {
             placeholderTextColor="#F8C471"
             style={styles.inputStyle}
             onChangeText={ email => setEmail(email) }
+            value={email}
           />
           <TextInput
             placeholder="Password"
@@ -77,12 +105,30 @@ export default function SignIn({ navigation, route }) {
             placeholderTextColor="#F8C471"
             style={styles.inputStyle}
             onChangeText={password => setPassword(password) }
+            value={password}
           />
           <TouchableOpacity onPress={signinVendor} style={styles.btnContainer}>
-            <Text style={styles.btnText}>continue as vendor</Text>
+          {
+            vendorSubmit ?
+            (
+              <ActivityIndicator size="large" color="white" />
+            ):
+            (
+              <Text style={styles.btnText}>continue as vendor</Text>
+            )
+          }
           </TouchableOpacity>
-          <TouchableOpacity onPress={nextScreen} style={styles.btnContainer}>
-            <Text style={styles.btnText}>continue as user</Text>
+          <TouchableOpacity onPress={signinUser} style={styles.btnContainer}>
+          {
+            userSubmit ?
+            (
+              <ActivityIndicator size="large" color="white" />
+            ):
+            (
+                <Text style={styles.btnText}>continue as user</Text>
+            )
+          }
+
           </TouchableOpacity>
           <Text style={{ marginVertical: 15, fontSize: hp("1.8%") }}>
             or via social networks

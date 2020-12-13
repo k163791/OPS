@@ -48,7 +48,7 @@ export default function SignUpScreen2({ navigation, route }) {
 
   const Submit = () => {
     try {
-      console.log(route.params.vendor);
+      // console.log(route.params.vendor);
       let vendor = route.params.vendor;
       vendor.shopName = shopName;
       vendor.phoneNumber = phoneNumber;
@@ -57,6 +57,7 @@ export default function SignUpScreen2({ navigation, route }) {
       vendor.delivery = delivery;
       vendor.takeaway = takeaway;
       vendor.postalCode = postalCode;
+      vendor.profileImage = profileImage;
 
       // console.log('Vendor: ', vendor);
       navigation.navigate("SignUpScreen3", { vendor: vendor })

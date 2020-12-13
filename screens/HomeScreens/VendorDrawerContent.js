@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -12,8 +12,11 @@ import { Drawer } from "react-native-paper";
 import { FontAwesome, Ionicons, FontAwesome5 } from "@expo/vector-icons";
 import { Avatar, Badge } from "react-native-elements";
 import { TouchableHighlight } from "react-native-gesture-handler";
+import axios from "axios";
 
-export default function DrawerContent(props) {
+export default function DrawerContent({ navigation, route, ...props }) {
+
+
   return (
     <View
       style={{

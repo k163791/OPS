@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import {
   TextInput,
   ImageBackground,
   SafeAreaView,
+  ActivityIndicator,
 } from "react-native";
 import {
   Feather,
@@ -21,12 +22,89 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import axios from "axios"
+import { APP_URL } from "../constant_vars";
 
 export default function VendorMessages({ navigation, route }) {
   const [message, setMessage] = useState([
     { message: "Hello Brother", key: "1" },
     { message: "In This Shirt", key: "2" },
   ]);
+
+  const [ orders, setOrders ] = useState([])
+  // const [ delivered, setDelivered ] = useState([])
+  // const [ shipped, setShipped ] = useState([])
+  // const [ profileImage, setProfileImage ] = useState("")
+  const [ changeStatusSubmit, setChangeStatusSubmit ] = useState(false)
+  const [ token, setToken ] = useState("")
+  useEffect(() => {
+    console.log("Sales: ", route);
+    let vendor = route.params;
+    axios.get(APP_URL + "vendor/getOrder", {
+      headers: {'Authorization': `Bearer ${vendor.token}`}
+    })
+    .then(res => {
+      let result = res.data.result;
+      console.log('result: ', result);
+      setOrders(result)
+    }).catch(err => {
+      alert(err);
+    })
+
+
+    axios.get(APP_URL + "vendor/documentRequest", {
+      headers: { 'Authorization': `Bearer ${route.params.token}`}
+    })
+    .then(res => {
+      console.log('Doc Request: ', res.data)
+    }).catch(err => {
+      alert(err)
+    })
+
+
+  }, [])
+
+
+  const changeStatus = (tracking, id, token) => {
+    let { delivered, shipped } = tracking;
+    if(!delivered) {
+        // console.log('token: ', token)
+        setChangeStatusSubmit(true)
+        axios.post(APP_URL + "vendor/orderStatus/" + id, {
+          tracking: {
+            delivered: true,
+            shipped: true,
+          }
+        }, {
+          headers: { 'Authorization': `Bearer ${route.params.token}`}
+        }).then(res => {
+          setChangeStatusSubmit(false)
+
+            console.log(res.data);
+        }).catch(err => {
+          setChangeStatusSubmit(false)
+          alert(err);
+        })
+
+    } else {
+      setChangeStatusSubmit(true)
+      axios.post(APP_URL + "vendor/orderStatus/" + id, {
+        tracking: {
+          delivered: false,
+          shipped: true
+        }
+      }, {
+        headers: { 'Authorization': `Bearer ${route.params.token}`}
+      }).then(res => {
+        setChangeStatusSubmit(false)
+
+          console.log(res.data);
+      }).catch(err => {
+        setChangeStatusSubmit(false)
+        alert(err);
+      })
+    }
+  }
 
   return (
     <View style={{ flex: 1, marginBottom: 10 }}>
@@ -50,10 +128,10 @@ export default function VendorMessages({ navigation, route }) {
         style={{ flex: 1, marginVertical: 10, marginHorizontal: 10 }}
       >
         <FlatList
-          data={message}
+          data={orders}
           renderItem={({ item }) => {
             return (
-              <TouchableOpacity>
+              <View key={item._id}>
                 <View
                   style={{
                     flex: 1,
@@ -79,7 +157,7 @@ export default function VendorMessages({ navigation, route }) {
                       fontWeight: "bold",
                     }}
                   >
-                    {item.message}
+                    {item.user.first_name}
                   </Text>
                   <Text
                     style={{
@@ -103,7 +181,7 @@ export default function VendorMessages({ navigation, route }) {
                       marginRight: wp("35%"),
                     }}
                   >
-                    This is the message
+
                   </Text>
                   <View
                     style={{
@@ -118,30 +196,65 @@ export default function VendorMessages({ navigation, route }) {
                       justifyContent: "center",
                     }}
                   >
-                    <Text style={{ alignSelf: "center" }}>Pending</Text>
+                    <Text style={{ alignSelf: "center" }}>
+                      {
+                        item.tracking.delivered ?
+                        (
+                          "Delivered"
+                        ):
+                        item.tracking.shipped ?
+                        (
+                          "Shipped"
+                        ):
+                        (
+                          "Pending"
+                        )
+                      }
+
+                    </Text>
                   </View>
 
                   <View
                     style={{
                       position: "absolute",
-                      top: 80,
-                      left: wp("75%"),
+                      top: 70,
+                      left: wp("70%"),
                       marginRight: wp("35%"),
                       justifyContent: "center",
                     }}
                   >
-                    <Text
-                      style={{
-                        alignSelf: "center",
-                        fontSize: hp("1.9%"),
-                        fontWeight: "bold",
-                      }}
+                    <TouchableOpacity
+                      disabled={item.tracking.delivered && item.tracking.shipped}
+                      style={styles.sendBtnStyle}
+                      onPress={ () => changeStatus(item.tracking, item._id)}
                     >
-                      Rs. 200
-                    </Text>
+                    {
+                      changeStatusSubmit ?
+                      (
+                          <ActivityIndicator size="small" color="white"/>
+                      ):
+                      (
+                          <Text style={styles.whiteTextStyle}>
+                            {
+                              !item.tracking.shipped ?
+                              (
+                                "Ship"
+                              ):
+                              !item.tracking.delivered ?
+                              (
+                                  "Deliver"
+                              ):
+                              (
+                                "Delivered"
+                              )
+                            }
+                          </Text>
+                      )
+                    }
+                    </TouchableOpacity>
                   </View>
                 </View>
-              </TouchableOpacity>
+              </View>
             );
           }}
         />
@@ -167,4 +280,16 @@ const styles = StyleSheet.create({
     color: "black",
     marginBottom: hp("2%"),
   },
+  sendBtnStyle: {
+    width: wp('20%'),
+    height: hp('4%'),
+    fontSize: hp('4%'),
+    borderRadius: 10,
+    backgroundColor: '#5bc0de',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  whiteTextStyle: {
+    color: 'white',
+  }
 });

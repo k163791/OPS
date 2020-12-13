@@ -67,13 +67,52 @@ function homeDrawer({ navigation, route }) {
   ]);
 
 
+  const [ vendor, setVendor ] = useState({})
+  const [ shopName, setShopName ] = useState("")
+  const [ products, setProducts ] = useState(0)
+  const [ profileImage, setProfileImage ] = useState("")
+  const [ orders, setOrders ] = useState(0)
+  // const [ documents, setDocuments ] = useState([])
+
   useEffect(() => {
-    console.log(route.params);
-    // axios.get(APP_URL + "vendor/" + route.params.vendor._id)
-    // .then(res => {
-    //   console.log('Response: ', res.data);
-    // })
+    let vendor = route.params;
+    // console.log(vendor);
+    axios.get(APP_URL + "vendor/" + vendor._id)
+    .then(res => {
+      // console.log('Response after login: ', res.data);
+      let result = res.data.result;
+      setShopName(result.personal.shopName)
+      setProfileImage(result.personal.profileImage)
+      // console.log("vendor: ", vendor.personal)
+    }).catch(err => {
+      alert(err);
+    })
+
+    axios.get(APP_URL + "vendor/products/" + vendor._id)
+    .then(res => {
+      let result = res.data.result;
+      setProducts(result.length)
+      // console.log('products: ',result)
+      // setProducts(result.products.length)
+    }).catch(err => {
+      alert(err);
+    })
+
+
+    axios.get(APP_URL + "vendor/getOrder", {
+      headers: {'Authorization': `Bearer ${vendor.token}`}
+    })
+    .then(res => {
+      let result = res.data.result;
+      // console.log('orders: ',res);
+      setOrders(result.length)
+    }).catch(err => {
+      alert(err);
+    })
+
+
   }, [])
+
 
   return (
     <View style={{ flex: 1, marginBottom: 20 }}>
@@ -112,7 +151,11 @@ function homeDrawer({ navigation, route }) {
             }}
           >
             <Image
-              source={{ uri: "https://i.redd.it/8rr9o5hakpg51.jpg" }}
+              source={
+                profileImage ?
+                { uri: profileImage }:
+                { uri: "https://i.redd.it/8rr9o5hakpg51.jpg" }
+              }
               style={{
                 height: hp("10%"),
                 width: wp("20%"),
@@ -129,7 +172,9 @@ function homeDrawer({ navigation, route }) {
                   marginRight: 20,
                 }}
               >
-                Arthur Fleck's Printing Works
+                {
+                    shopName
+                }
               </Text>
             </View>
           </View>
@@ -198,7 +243,7 @@ function homeDrawer({ navigation, route }) {
                       textAlign: "center",
                     }}
                   >
-                    190+
+                    0
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -243,7 +288,9 @@ function homeDrawer({ navigation, route }) {
                       textAlign: "center",
                     }}
                   >
-                    190+
+                    {
+                      products
+                    }
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -284,7 +331,7 @@ function homeDrawer({ navigation, route }) {
                       textAlign: "center",
                     }}
                   >
-                    10+
+                    { orders }
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -334,7 +381,7 @@ function homeDrawer({ navigation, route }) {
                       textAlign: "center",
                     }}
                   >
-                    190+
+                    0
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -375,7 +422,7 @@ function homeDrawer({ navigation, route }) {
                       textAlign: "center",
                     }}
                   >
-                    190+
+                    0
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -389,7 +436,7 @@ function homeDrawer({ navigation, route }) {
                   alignSelf: "center",
                 }}
               >
-                Products
+                Orders Processing
               </Text>
             </View>
 
@@ -416,7 +463,7 @@ function homeDrawer({ navigation, route }) {
                       textAlign: "center",
                     }}
                   >
-                    190+
+                    0
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -477,7 +524,7 @@ function homeDrawer({ navigation, route }) {
                 </Text>
               </View>
               <View style={{ alignItems: "center" }}>
-                <Text style={{ fontSize: hp("1.4%") }}>Earning in August</Text>
+                <Text style={{ fontSize: hp("1.4%") }}>Earning in {new Date().getFullYear()}</Text>
                 <Text style={{ fontWeight: "bold" }}>Rs. 0</Text>
               </View>
             </View>
@@ -505,19 +552,20 @@ function homeDrawer({ navigation, route }) {
   );
 }
 
-export default function VendorHome({ navigation, route, vendor }) {
-
-  useEffect(() => {
-    console.log('route: ',route)
-    console.log("vendor: ", vendor)
-  }, [])
+export default function VendorHome({ navigation, route }) {
 
   return (
-    <Drawer.Navigator drawerContent={(props) => <DrawerContent {...props} />}>
+    <Drawer.Navigator
+      drawerContent={(props) => <DrawerContent {...props}/>}
+    >
       <Drawer.Screen
         name="Home"
         component={homeDrawer}
-        imageIcon={{ uri: "https://i.redd.it/1ddlsj0xali51.jpg" }}
+        imageIcon={
+            { uri: "https://i.redd.it/1ddlsj0xali51.jpg" }
+          }
+        initialParams={route.params}
+        // options={{ route: route.params }}
       />
     </Drawer.Navigator>
   );
