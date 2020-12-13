@@ -24,6 +24,7 @@ import {
 } from "react-native-responsive-screen";
 import axios from "axios"
 import { APP_URL } from "../constant_vars";
+import * as FileSystem from 'expo-file-system';
 
 export default function VendorMessages({ navigation, route }) {
   const [message, setMessage] = useState([
@@ -36,6 +37,7 @@ export default function VendorMessages({ navigation, route }) {
   // const [ shipped, setShipped ] = useState([])
   // const [ profileImage, setProfileImage ] = useState("")
   const [ changeStatusSubmit, setChangeStatusSubmit ] = useState(false)
+  const [ documents, setDocuments ] = useState([])
   const [ token, setToken ] = useState("")
   useEffect(() => {
     console.log("Sales: ", route);
@@ -57,6 +59,7 @@ export default function VendorMessages({ navigation, route }) {
     })
     .then(res => {
       console.log('Doc Request: ', res.data)
+      setDocuments(res.data.result)
     }).catch(err => {
       alert(err)
     })
@@ -106,6 +109,18 @@ export default function VendorMessages({ navigation, route }) {
     }
   }
 
+
+  const downloadResumable = (file) => FileSystem.downloadAsync(
+  file,
+  FileSystem.documentDirectory
+)
+  .then(({ uri }) => {
+    console.log('Finished downloading to ', uri);
+  })
+  .catch(error => {
+    console.error(error);
+  });
+
   return (
     <View style={{ flex: 1, marginBottom: 10 }}>
       <View style={styles.headerContainer}>
@@ -128,10 +143,10 @@ export default function VendorMessages({ navigation, route }) {
         style={{ flex: 1, marginVertical: 10, marginHorizontal: 10 }}
       >
         <FlatList
-          data={orders}
+          data={documents}
           renderItem={({ item }) => {
             return (
-              <View key={item._id}>
+              <View key={item._id} id={item._id}>
                 <View
                   style={{
                     flex: 1,
@@ -144,7 +159,7 @@ export default function VendorMessages({ navigation, route }) {
                   }}
                 >
                   <Image
-                    source={{ uri: "https://i.redd.it/1ddlsj0xali51.jpg" }}
+                    source={{ uri: "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg" }}
                     style={{ height: 70, width: 70, borderRadius: 50 }}
                   />
                   <Text
@@ -169,7 +184,7 @@ export default function VendorMessages({ navigation, route }) {
                       marginRight: 10,
                     }}
                   >
-                    April 23, 2020
+                  {item.type}
                   </Text>
                   <Text
                     numberOfLines={3}
@@ -181,78 +196,75 @@ export default function VendorMessages({ navigation, route }) {
                       marginRight: wp("35%"),
                     }}
                   >
+                  {item.title} - Rs. {item.cost}
 
                   </Text>
-                  <View
-                    style={{
-                      position: "absolute",
-                      top: 80,
-                      left: 100,
-                      marginRight: wp("35%"),
-                      borderWidth: 1,
-                      borderColor: "gold",
-                      borderRadius: 8,
-                      width: wp("30%"),
-                      justifyContent: "center",
-                    }}
-                  >
-                    <Text style={{ alignSelf: "center" }}>
-                      {
-                        item.tracking.delivered ?
-                        (
-                          "Delivered"
-                        ):
-                        item.tracking.shipped ?
-                        (
-                          "Shipped"
-                        ):
-                        (
-                          "Pending"
-                        )
-                      }
+                  {
+                    item.type === "secret" &&
+                    !item.secretDocumentAccess.includes(route.params._id)
+                    ?
+                    (
+                      <TouchableOpacity
+                        style={{
+                          position: "absolute",
+                          top: 80,
+                          left: 100,
+                          marginRight: wp("35%"),
+                          borderRadius: 8,
+                          width: wp("30%"),
+                          justifyContent: "center",
+                          backgroundColor: "#5bc0de",
+                        }}
 
-                    </Text>
-                  </View>
+                      >
+                        <Text style={{ alignSelf: "center", color: 'white' }}>
+                          Request Access
+                        </Text>
+                      </TouchableOpacity>
 
-                  <View
-                    style={{
-                      position: "absolute",
-                      top: 70,
-                      left: wp("70%"),
-                      marginRight: wp("35%"),
-                      justifyContent: "center",
-                    }}
-                  >
-                    <TouchableOpacity
-                      disabled={item.tracking.delivered && item.tracking.shipped}
-                      style={styles.sendBtnStyle}
-                      onPress={ () => changeStatus(item.tracking, item._id)}
-                    >
-                    {
-                      changeStatusSubmit ?
-                      (
-                          <ActivityIndicator size="small" color="white"/>
-                      ):
-                      (
-                          <Text style={styles.whiteTextStyle}>
-                            {
-                              !item.tracking.shipped ?
-                              (
-                                "Ship"
-                              ):
-                              !item.tracking.delivered ?
-                              (
-                                  "Deliver"
-                              ):
-                              (
-                                "Delivered"
-                              )
-                            }
-                          </Text>
-                      )
-                    }
-                    </TouchableOpacity>
-                  </View>
+                    ):
+                    (
+                        <TouchableOpacity
+                          style={{
+                            position: "absolute",
+                            top: 80,
+                            left: 100,
+                            marginRight: wp("35%"),
+                            borderRadius: 8,
+                            width: wp("30%"),
+                            justifyContent: "center",
+                            backgroundColor: "#5bc0de",
+                          }}
+
+                          onPress={ () => downloadResumable(item.file) }
+
+                        >
+                          <Text style={{ alignSelf: "center", color: 'white' }}>Download File</Text>
+                        </TouchableOpacity>
+                    )
+                  }
+
+                  {
+                    !item.approved
+                    ?
+                    (
+                      <TouchableOpacity
+                        style={{
+                          position: "absolute",
+                          top: 80,
+                          borderRadius: 8,
+                          left: wp("60%"),
+                          marginRight: wp("45%"),
+                          justifyContent: "center",
+                          backgroundColor: "#5bc0de"
+                        }}
+                      >
+                          <Text style={{ alignSelf: "center", color: 'white' }}>Submit Request</Text>
+                      </TouchableOpacity>
+                    ):
+                    null
+                  }
+
                 </View>
               </View>
             );
@@ -283,7 +295,7 @@ const styles = StyleSheet.create({
   sendBtnStyle: {
     width: wp('20%'),
     height: hp('4%'),
-    fontSize: hp('4%'),
+    fontSize: hp('2%'),
     borderRadius: 10,
     backgroundColor: '#5bc0de',
     alignItems: 'center',

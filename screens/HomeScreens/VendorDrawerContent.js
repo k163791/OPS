@@ -40,13 +40,6 @@ export default function DrawerContent({ navigation, route, ...props }) {
         <Drawer.Section>
           <DrawerItem
             icon={({ color, size }) => (
-              <FontAwesome name="dashboard" size={24} color="black" />
-            )}
-            label="Dashboard"
-            labelStyle={{ fontSize: 20, fontWeight: "bold" }}
-          />
-          <DrawerItem
-            icon={({ color, size }) => (
               <FontAwesome5 name="dolly-flatbed" size={24} color="black" />
             )}
             label="Orders"
@@ -54,30 +47,9 @@ export default function DrawerContent({ navigation, route, ...props }) {
           />
           <DrawerItem
             icon={({ color, size }) => (
-              <FontAwesome5 name="warehouse" size={24} color="black" />
-            )}
-            label="Vendors"
-            labelStyle={{ fontSize: 20, fontWeight: "bold" }}
-          />
-          <DrawerItem
-            icon={({ color, size }) => (
-              <FontAwesome name="users" size={24} color="black" />
-            )}
-            label="Customers"
-            labelStyle={{ fontSize: 20, fontWeight: "bold" }}
-          />
-          <DrawerItem
-            icon={({ color, size }) => (
               <FontAwesome name="star" size={24} color="black" />
             )}
             label="Products"
-            labelStyle={{ fontSize: 20, fontWeight: "bold" }}
-          />
-          <DrawerItem
-            icon={({ color, size }) => (
-              <FontAwesome name="bookmark" size={24} color="black" />
-            )}
-            label="Categories"
             labelStyle={{ fontSize: 20, fontWeight: "bold" }}
           />
         </Drawer.Section>
