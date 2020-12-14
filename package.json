@@ -33,7 +33,10 @@
     "react-native-screens": "~2.9.0",
     "react-native-video": "^5.1.0-alpha8",
     "react-native-web": "~0.11.7",
-    "expo-file-system": "~9.0.1"
+    "expo-file-system": "~9.0.1",
+    "expo-media-library": "~8.2.1",
+    "@react-native-community/datetimepicker": "2.4.0",
+    "expo-document-picker": "~8.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",

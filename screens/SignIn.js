@@ -54,6 +54,7 @@ export default function SignIn({ navigation, route }) {
       // console.log('Response: ',res.data)
       navigation.navigate("VendorHome", { vendor: res.data.result })
     }).catch(err => {
+      setVendorSubmit(false)
       alert(`Error: ${err}`)
     })
     // sarfarazahmedkhankhan@gmail.com
@@ -67,7 +68,7 @@ export default function SignIn({ navigation, route }) {
 
     setUserSubmit(true)
     axios.post(APP_URL + "user/login", {
-      email: email,
+      email: email.toLowerCase(),
       password: password
     }).then(res => {
       // console.log('res: ', res.data)
@@ -75,6 +76,7 @@ export default function SignIn({ navigation, route }) {
       resetForm()
       navigation.navigate("Home", { user: res.data.result })
     }).catch(err => {
+      setUserSubmit(false)
       alert(`Error: ${err}`)
     })
   }

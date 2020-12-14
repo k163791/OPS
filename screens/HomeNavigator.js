@@ -28,6 +28,7 @@ export default function Homenavigator({ navigation, route }) {
 
   return (
     <Tab.Navigator
+      value={route.params.user}
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
@@ -55,10 +56,10 @@ export default function Homenavigator({ navigation, route }) {
         inactiveTintColor: "gray",
       }}
     >
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Messages" component={MessagesScreen} />
+      <Tab.Screen name="Home" component={HomeScreen} initialParams={route.params.user}/>
+      <Tab.Screen name="Request" component={MessagesScreen} initialParams={route.params.user} />
       <Tab.Screen name="Search" component={SearchScreen} />
-      <Tab.Screen name="Notification" component={NotificationScreen} />
+      <Tab.Screen name="Notification" component={NotificationScreen} initialParams={route.params.user}/>
       <Tab.Screen name={"Account"} component={AccountScreen} />
     </Tab.Navigator>
   );

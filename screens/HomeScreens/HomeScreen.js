@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -23,6 +23,12 @@ const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
 function homeDrawer({ navigation, route }) {
+
+
+  useEffect(() => {
+    console.log('Route Params: ', route)
+  }, [])
+
   const [gallery, setgallery] = useState([
     {
       image: {
@@ -243,13 +249,14 @@ function homeDrawer({ navigation, route }) {
   );
 }
 
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen({ navigation, route }) {
   return (
     <Drawer.Navigator drawerContent={(props) => <DrawerContent {...props} />}>
       <Drawer.Screen
         name="Home"
         component={homeDrawer}
         imageIcon={{ uri: "https://i.redd.it/1ddlsj0xali51.jpg" }}
+        initialParams={route.params}
       />
     </Drawer.Navigator>
   );

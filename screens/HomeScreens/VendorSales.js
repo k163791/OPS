@@ -11,6 +11,7 @@ import {
   ImageBackground,
   SafeAreaView,
   ActivityIndicator,
+  Modal,
 } from "react-native";
 import {
   Feather,
@@ -25,6 +26,8 @@ import {
 import axios from "axios"
 import { APP_URL } from "../constant_vars";
 import * as FileSystem from 'expo-file-system';
+import * as Permissions from 'expo-permissions';
+import * as MediaLibrary from 'expo-media-library';
 
 export default function VendorMessages({ navigation, route }) {
   const [message, setMessage] = useState([
@@ -39,6 +42,11 @@ export default function VendorMessages({ navigation, route }) {
   const [ changeStatusSubmit, setChangeStatusSubmit ] = useState(false)
   const [ documents, setDocuments ] = useState([])
   const [ token, setToken ] = useState("")
+  const [ show, setShow ] = useState(false)
+  const [ currentId, setCurrentId ] = useState("")
+  const [ cost, setCost ] = useState(0)
+  const [ requestSubmit, setRequestSubmit ] = useState(false)
+
   useEffect(() => {
     console.log("Sales: ", route);
     let vendor = route.params;
@@ -112,14 +120,65 @@ export default function VendorMessages({ navigation, route }) {
 
   const downloadResumable = (file) => FileSystem.downloadAsync(
   file,
-  FileSystem.documentDirectory
+  FileSystem.documentDirectory + "ops.pdf"
 )
   .then(({ uri }) => {
     console.log('Finished downloading to ', uri);
+    saveFile(uri)
   })
   .catch(error => {
     console.error(error);
   });
+
+  const saveFile = async (fileUri: string) => {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    if (status === "granted") {
+
+      const file = await FileSystem.downloadAsync(
+        fileUri,
+        FileSystem.documentDirectory
+      ).then( async res => {
+        let fileName = res.headers["content-disposition"].split("utf-8''")
+        await FileSystem.downloadAsync(
+          fileUri,
+          FileSystem.documentDirectory + fileName
+        ).then(res1 => {
+          console.log("res: ", res1)
+        })
+        // let fileExtension = res.
+        // let fileName = res.headers["content-disposition"].split("utf-8''")
+        // const assetLink = await MediaLibrary.createAssetAsync(res.uri + fileName);
+        // console.log("asset link: ", assetLink);
+      }).catch(err => {
+        alert(err)
+      })
+    }
+  }
+
+  const submitRequest = () => {
+    setShow(false)
+
+    if(cost <= 0) {
+      alert('Invalid cost');
+      setShow(true)
+    } else {
+      setRequestSubmit(true)
+      axios.get(APP_URL + "vendor/sendDocumentRequest/" + currentId, {
+        headers: {'Authorization': `Bearer ${route.params.token}`}
+      })
+      .then(res => {
+        // console.log('send doc req: ',res.data);
+        setCost(0)
+        setRequestSubmit(false)
+      }).catch(err => {
+        alert(err);
+        // console.log("error: ", err)
+        setRequestSubmit(false)
+        
+      })
+    }
+
+  }
 
   return (
     <View style={{ flex: 1, marginBottom: 10 }}>
@@ -144,7 +203,8 @@ export default function VendorMessages({ navigation, route }) {
       >
         <FlatList
           data={documents}
-          renderItem={({ item }) => {
+          keyExtractor={(item, index) => item._id }
+          renderItem={({ item, index }) => {
             return (
               <View key={item._id} id={item._id}>
                 <View
@@ -236,7 +296,7 @@ export default function VendorMessages({ navigation, route }) {
                             backgroundColor: "#5bc0de",
                           }}
 
-                          onPress={ () => downloadResumable(item.file) }
+                          onPress={ () => saveFile(item.file) }
 
                         >
                           <Text style={{ alignSelf: "center", color: 'white' }}>Download File</Text>
@@ -245,9 +305,7 @@ export default function VendorMessages({ navigation, route }) {
                   }
 
                   {
-                    !item.approved
-                    ?
-                    (
+
                       <TouchableOpacity
                         style={{
                           position: "absolute",
@@ -258,11 +316,23 @@ export default function VendorMessages({ navigation, route }) {
                           justifyContent: "center",
                           backgroundColor: "#5bc0de"
                         }}
+                        // onPress={ () => submitRequest(item._id) }
+                        onPress={ () => { setCurrentId(item._id); setShow(true) } }
                       >
+                      {
+                        requestSubmit ?
+                        (
+                          <ActivityIndicator
+                            size="small"
+                            color="white"
+                          />
+                        ):
+                        (
                           <Text style={{ alignSelf: "center", color: 'white' }}>Submit Request</Text>
+                        )
+                      }
                       </TouchableOpacity>
-                    ):
-                    null
+
                   }
 
                 </View>
@@ -270,7 +340,40 @@ export default function VendorMessages({ navigation, route }) {
             );
           }}
         />
+        <Modal
+        animationType="slide"
+        transparent={true}
+        visible={show}
+        onRequestClose={() => setShow(false)}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>Enter Cost</Text>
+
+              <TextInput
+                placeholder="Please enter cost"
+                onChangeText={ cost => setCost(cost) }
+                value={cost}
+                keyboardType="numeric"
+              />
+
+              <TouchableOpacity
+                onPress={ () => submitRequest()}
+                style={styles.costStyle}
+              >
+                <Text style={{ color: "blue" }}>Send</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={ () => setShow(false)}
+                style={styles.costStyle}
+              >
+                <Text style={{ color: "blue" }}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
       </SafeAreaView>
+
     </View>
   );
 }
@@ -303,5 +406,41 @@ const styles = StyleSheet.create({
   },
   whiteTextStyle: {
     color: 'white',
+  },
+  inputStyle: {
+    width: "90%",
+    marginBottom: hp("3%"),
+    padding: wp("1%") + hp("1%"),
+    borderRadius: 10,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "#eee",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center"
+  },
+  costStyle: {
+    marginVertical: 10,
+    borderRadius: 10,
+
   }
 });

@@ -38,7 +38,7 @@ export default function FirstScreen({ navigation }) {
         >
           <TouchableOpacity onPress={() => navigation.navigate("MapScreen")}>
             <Image
-              source={{ uri: "https://i.redd.it/lwduoatqpvjz.jpg" }}
+              source={{ uri: "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg" }}
               style={{
                 height: hp("20%"),
                 width: wp("40%"),
@@ -74,7 +74,7 @@ export default function FirstScreen({ navigation }) {
         >
           <TouchableOpacity onPress={() => navigation.navigate("Intro")}>
             <Image
-              source={{ uri: "https://i.redd.it/8rr9o5hakpg51.jpg" }}
+              source={{ uri: "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg" }}
               style={{
                 height: hp("20%"),
                 width: wp("40%"),

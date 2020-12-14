@@ -229,6 +229,7 @@ export default function SignUpScreen2({ navigation, route }) {
             placeholder="Postal/Zip Code`"
             value={postalCode}
             onChangeText={postalCode => setPostalCode(postalCode) }
+              keyboardType="numeric"
           />
         </View>
 
