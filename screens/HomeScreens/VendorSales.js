@@ -44,8 +44,9 @@ export default function VendorMessages({ navigation, route }) {
   const [ token, setToken ] = useState("")
   const [ show, setShow ] = useState(false)
   const [ currentId, setCurrentId ] = useState("")
-  const [ cost, setCost ] = useState(0)
+  const [ cost, setCost ] = useState("")
   const [ requestSubmit, setRequestSubmit ] = useState(false)
+  const [ description, setDescription ] = useState("")
 
   useEffect(() => {
     console.log("Sales: ", route);
@@ -144,11 +145,9 @@ export default function VendorMessages({ navigation, route }) {
           FileSystem.documentDirectory + fileName
         ).then(res1 => {
           console.log("res: ", res1)
+          alert('File Downloaded successfully')
         })
-        // let fileExtension = res.
-        // let fileName = res.headers["content-disposition"].split("utf-8''")
-        // const assetLink = await MediaLibrary.createAssetAsync(res.uri + fileName);
-        // console.log("asset link: ", assetLink);
+
       }).catch(err => {
         alert(err)
       })
@@ -157,24 +156,35 @@ export default function VendorMessages({ navigation, route }) {
 
   const submitRequest = () => {
     setShow(false)
+    console.log('current id: ',currentId);
+    console.log('route token: ', route.params.token);
+    console.log('cost: ', cost)
+    console.log('description: ', description)
 
     if(cost <= 0) {
       alert('Invalid cost');
       setShow(true)
     } else {
       setRequestSubmit(true)
-      axios.get(APP_URL + "vendor/sendDocumentRequest/" + currentId, {
+      axios.post(APP_URL + "vendor/sendDocumentRequestOffer/" + currentId,
+      {offers: {details: {amount: "20", description: "sdasd"}, vendor: currentId }},
+      {
         headers: {'Authorization': `Bearer ${route.params.token}`}
       })
       .then(res => {
-        // console.log('send doc req: ',res.data);
-        setCost(0)
+        console.log('send doc req: ',res.data);
+        setCost("")
+        setDescription("")
         setRequestSubmit(false)
+        alert('Your request has been successfully submitted')
       }).catch(err => {
-        alert(err);
+        // alert(err);
+        alert("You have already submitted a request for this document")
+        setCost("")
+        setDescription("")
         // console.log("error: ", err)
         setRequestSubmit(false)
-        
+
       })
     }
 
@@ -351,10 +361,30 @@ export default function VendorMessages({ navigation, route }) {
               <Text style={styles.modalText}>Enter Cost</Text>
 
               <TextInput
-                placeholder="Please enter cost"
+                placeholder="Enter cost"
                 onChangeText={ cost => setCost(cost) }
                 value={cost}
                 keyboardType="numeric"
+                style={{
+                  borderWidth: 1,
+                  borderColor: 'black'
+                }}
+              />
+
+              <Text style={styles.modalText}>Enter Description</Text>
+
+              <TextInput
+                textAlignVertical={"top"}
+                underlineColorAndroid="transparent"
+                placeholder="Enter description"
+                multiline={true}
+                numberOfLines={5}
+                value={description}
+                onChangeText={description => setDescription(description) }
+                style={{
+                  borderWidth: 1,
+                  borderColor: 'black'
+                }}
               />
 
               <TouchableOpacity

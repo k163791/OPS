@@ -18,51 +18,54 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import DrawerContent from "./DrawerContent";
+import axios from "axios";
+import { APP_URL } from "../constant_vars"
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
 function homeDrawer({ navigation, route }) {
 
+  const [gallery, setgallery] = useState([]);
+  const [ sellers, setSellers ] = useState([]);
+  const [ products, setProducts ] = useState([]);
+  const [ virtualProducts, setVirtualProducts ] = useState([]);
 
   useEffect(() => {
     console.log('Route Params: ', route)
-  }, [])
+    axios.get(APP_URL + "user/popularServices")
+    .then(res => {
+      // console.log(res.data.result.p)
+      setgallery(res.data.result.popularServices)
+    }).catch(err => {
+      alert(err);
+    })
 
-  const [gallery, setgallery] = useState([
-    {
-      image: {
-        uri:
-          "https://images.pexels.com/photos/672358/pexels-photo-672358.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-      },
-      title: "Switzerland",
-      key: "1",
-    },
-    {
-      image: {
-        uri:
-          "https://images.pexels.com/photos/672358/pexels-photo-672358.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-      },
-      title: "New Zeland",
-      key: "2",
-    },
-    {
-      image: {
-        uri:
-          "https://images.pexels.com/photos/672358/pexels-photo-672358.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-      },
-      title: "Rome",
-      key: "3",
-    },
-    {
-      image: {
-        uri:
-          "https://images.pexels.com/photos/672358/pexels-photo-672358.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-      },
-      title: "Tahiti",
-      key: "4",
-    },
-  ]);
+    axios.get(APP_URL + "vendor/getAllVendor", {
+      headers: { "Authorization": `Bearer ${route.params.token}`}
+    })
+    .then(res => {
+        // console.log('vendors: ',res.data.result);
+        setSellers(res.data.result)
+    }).catch(err => {
+      alert(err)
+    })
+
+    axios.get(APP_URL + "product?type=physical", {
+      headers: { 'Authorization': `Bearer ${route.params.token}`}
+    }).then(res => {
+      setProducts(res.data.result)
+    }).catch(err => {
+      alert(err)
+    })
+
+    axios.get(APP_URL + "product?type=virtual", {
+      headers: {'Authorization': `Bearer ${route.params.token}`}
+    }).then(res => {
+      setVirtualProducts(res.data.result)
+    })
+
+  }, [])
 
   return (
     <View style={{ flex: 1, marginBottom: 10 }}>
@@ -140,7 +143,7 @@ function homeDrawer({ navigation, route }) {
                     >
                       <View>
                         <Image
-                          source={item.image}
+                          source={{ uri: item.img }}
                           style={{
                             height: hp("30%"),
                             width: wp("35%"),
@@ -148,7 +151,7 @@ function homeDrawer({ navigation, route }) {
                         />
                       </View>
                       <View style={{ padding: 10, width: 120 }}>
-                        <Text style={{ textAlign: "center" }}>
+                        <Text style={{ textAlign: "center", fontSize: hp('1%') }}>
                           {item.title}
                         </Text>
                       </View>
@@ -162,7 +165,7 @@ function homeDrawer({ navigation, route }) {
         <View style={{ height: 50 }}></View>
         <View style={styles.titleContainer}>
           <Text style={{ fontSize: hp("2.2%"), fontWeight: "bold" }}>
-            Inspired by Your Browser History
+            Sellers
           </Text>
           <TouchableOpacity>
             <Text style={{ top: 10, color: "#ff0048", fontWeight: "bold" }}>
@@ -175,7 +178,7 @@ function homeDrawer({ navigation, route }) {
             style={{ marginHorizontal: 10 }}
             horizontal={true}
             showsHorizontalScrollIndicator={false}
-            data={gallery}
+            data={sellers}
             renderItem={({ item }) => {
               return (
                 <View
@@ -196,7 +199,7 @@ function homeDrawer({ navigation, route }) {
                     >
                       <View>
                         <Image
-                          source={item.image}
+                          source={{ uri: item.gallery[0] }}
                           style={{
                             height: 135,
                             width: 120,
@@ -204,15 +207,8 @@ function homeDrawer({ navigation, route }) {
                         />
                       </View>
                       <View style={{ padding: 10, width: 120 }}>
-                        <Text
-                          style={{
-                            textAlign: "center",
-                            fontSize: hp("2%"),
-                            fontWeight: "bold",
-                            color: "#ff0048",
-                          }}
-                        >
-                          {item.title}
+                        <Text style={{ textAlign: "center", fontSize: hp('1%') }}>
+                          {item.personal.shopName}
                         </Text>
                       </View>
                       <View
@@ -244,6 +240,119 @@ function homeDrawer({ navigation, route }) {
             }}
           />
         </View>
+        <View style={{ height: 50 }}></View>
+        <View style={styles.titleContainer}>
+          <Text style={{ fontSize: hp("3%"), fontWeight: "bold" }}>
+            Physical Products
+          </Text>
+          <TouchableOpacity onPress={() => console.log(route.params.username)}>
+            <Text style={{ top: 20, color: "#ff0048", fontWeight: "bold" }}>
+              View All
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View style={{ marginTop: 20 }}>
+          <FlatList
+            style={{ marginHorizontal: 10 }}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            data={products}
+            renderItem={({ item }) => {
+              return (
+                <View
+                  style={{
+                    flex: 1,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginHorizontal: 10,
+                  }}
+                >
+                  <TouchableOpacity>
+                    <View
+                      style={{
+                        backgroundColor: "#eee",
+                        borderRadius: 10,
+                        overflow: "hidden",
+                      }}
+                    >
+                      <View>
+                        <Image
+                          source={{ uri: item.img[0] }}
+                          style={{
+                            height: hp("30%"),
+                            width: wp("35%"),
+                          }}
+                        />
+                      </View>
+                      <View style={{ padding: 10, width: 120 }}>
+                        <Text style={{ textAlign: "center", fontSize: hp('1%') }}>
+                          {item.title}
+                        </Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              );
+            }}
+          />
+        </View>
+        <View style={{ height: 50 }}></View>
+        <View style={styles.titleContainer}>
+          <Text style={{ fontSize: hp("3%"), fontWeight: "bold" }}>
+            Virtual Products
+          </Text>
+          <TouchableOpacity onPress={() => console.log(route.params.username)}>
+            <Text style={{ top: 20, color: "#ff0048", fontWeight: "bold" }}>
+              View All
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View style={{ marginTop: 20 }}>
+          <FlatList
+            style={{ marginHorizontal: 10 }}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            data={virtualProducts}
+            renderItem={({ item }) => {
+              return (
+                <View
+                  style={{
+                    flex: 1,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginHorizontal: 10,
+                  }}
+                >
+                  <TouchableOpacity>
+                    <View
+                      style={{
+                        backgroundColor: "#eee",
+                        borderRadius: 10,
+                        overflow: "hidden",
+                      }}
+                    >
+                      <View>
+                        <Image
+                          source={{ uri: item.img[0] }}
+                          style={{
+                            height: hp("30%"),
+                            width: wp("35%"),
+                          }}
+                        />
+                      </View>
+                      <View style={{ padding: 10, width: 120 }}>
+                        <Text style={{ textAlign: "center", fontSize: hp('1%') }}>
+                          {item.title}
+                        </Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              );
+            }}
+          />
+        </View>
+        <View style={{ height: 50 }}></View>
       </ScrollView>
     </View>
   );

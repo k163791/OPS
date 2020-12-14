@@ -39,7 +39,7 @@ export default function Homenavigator({ navigation, route }) {
             iconName = "gear";
           } else if (route.name === "Account") {
             iconName = "user";
-          } else if (route.name === "Messages") {
+          } else if (route.name === "Request") {
             iconName = "send";
           } else if (route.name === "Search") {
             iconName = "search";

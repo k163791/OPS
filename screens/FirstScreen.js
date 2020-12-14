@@ -38,7 +38,7 @@ export default function FirstScreen({ navigation }) {
         >
           <TouchableOpacity onPress={() => navigation.navigate("MapScreen")}>
             <Image
-              source={{ uri: "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg" }}
+              source={{ uri: "https://image.freepik.com/free-vector/customer-care-illustration-concept_42694-26.jpg" }}
               style={{
                 height: hp("20%"),
                 width: wp("40%"),
@@ -74,7 +74,7 @@ export default function FirstScreen({ navigation }) {
         >
           <TouchableOpacity onPress={() => navigation.navigate("Intro")}>
             <Image
-              source={{ uri: "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg" }}
+              source={{ uri: "https://media.istockphoto.com/vectors/mobile-shopping-vector-id1152401093?b=1&k=6&m=1152401093&s=612x612&w=0&h=oHqNKx8E3esRuXqNOfq-VcamfavdqeF_JcGN8T-XWmg=" }}
               style={{
                 height: hp("20%"),
                 width: wp("40%"),

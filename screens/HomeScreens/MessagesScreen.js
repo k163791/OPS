@@ -26,11 +26,11 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 export default function MessagesScreen({ navigation, route }) {
   const [ title, setTitle ] = useState("")
   const [ description, setDescription ] = useState("")
-  const [ cost, setCost ] = useState(0)
+  const [ cost, setCost ] = useState("")
   const [ show, setShow ] = useState(false)
   const [ mode, setMode ] = useState("date")
   const [ date, setDate ] = useState(new Date());
-  const [ file, setFile ] = useState("");
+  const [ file, setFile ] = useState([]);
   const [ secure, setSecure ] = useState(false);
 
   const onChange = (event, selectedDate) => {
@@ -54,7 +54,7 @@ export default function MessagesScreen({ navigation, route }) {
 
   const resetForm = () => {
     setDate(new Date())
-    setFile("")
+    setFile([])
     setDescription("")
     setTitle("")
     setCost(0)
@@ -76,14 +76,7 @@ export default function MessagesScreen({ navigation, route }) {
 
     let newDate = date.toDateString();
     let newTime = date.toLocaleTimeString();
-    // console.log(newDate);
-    // console.log(newTime);
-    // console.log(cost);
-    // console.log(description);
-    // console.log(title);
-    // console.log(file);
-    // console.log(type);
-    // console.log(route);
+
 
     axios.post(APP_URL + `user/documentRequest?type=${type}`, {
       date: newDate,
@@ -106,8 +99,17 @@ export default function MessagesScreen({ navigation, route }) {
 
   const pickDocument = async () => {
     let result = await DocumentPicker.getDocumentAsync({});
-      // console.log('file: ',result);
-      setFile(result.uri)
+      let newFile = file.concat(result.uri);
+      setFile(newFile)
+    }
+
+    const removeFile = (index, value) => {
+      console.log('index: ', index)
+      let newFile = file;
+      console.log("sliced: ", newFile.splice(index, 1) )
+      console.log("new file: ", newFile)
+      newFile = newFile.splice(index, 1)
+      setFile(newFile)
     }
 
   return (
@@ -121,6 +123,7 @@ export default function MessagesScreen({ navigation, route }) {
       <SafeAreaView
         style={{ flex: 1, marginVertical: 10, marginHorizontal: 10 }}
       >
+        <ScrollView>
 
         <TextInput
           placeholder="Enter title"
@@ -128,12 +131,20 @@ export default function MessagesScreen({ navigation, route }) {
           onChangeText={ title => setTitle(title) }
           style={styles.inputStyles}
         />
+
+
+
         <TextInput
+          textAlignVertical={"top"}
+          underlineColorAndroid="transparent"
           placeholder="Enter Description"
+          multiline={true}
+          numberOfLines={8}
+          style={styles.textAreaStyle}
           value={description}
-          onChangeText={ description => setDescription(description) }
-          style={styles.inputStyles}
+          onChangeText={description => setDescription(description) }
         />
+
         <TextInput
           placeholder="Enter cost"
           keyboardType="numeric"
@@ -141,53 +152,80 @@ export default function MessagesScreen({ navigation, route }) {
           style={styles.inputStyles}
           value={cost.toString()}
         />
+        <View style={styles.centerContainer}>
+          <TouchableOpacity
+            onPress={showDatepicker}
+            style={styles.btnStyle}
+          >
+          {
+            show && (
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={date}
+                mode={mode}
+                is24Hour={true}
+                display="default"
+                onChange={onChange}
+              />
+            )
+          }
+          <Text style={styles.btnTextStyle}>Date</Text>
+          </TouchableOpacity>
+        </View>
 
-        <TouchableOpacity
-          onPress={showDatepicker}
-          style={styles.btnStyle}
-        >
-        {
-          show && (
-            <DateTimePicker
-              testID="dateTimePicker"
-              value={date}
-              mode={mode}
-              is24Hour={true}
-              display="default"
-              onChange={onChange}
-            />
-          )
-        }
-        <Text style={styles.btnTextStyle}>Date</Text>
-        </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={showTimepicker}
-          style={styles.btnStyle}
-        >
-        {
-          show && (
-            <DateTimePicker
-              testID="dateTimePicker"
-              value={date}
-              mode={mode}
-              is24Hour={true}
-              display="default"
-              onChange={onChange}
-            />
-          )
-        }
-          <Text style={styles.btnTextStyle}>Time</Text>
-        </TouchableOpacity>
+        <View style={styles.centerContainer}>
+          <TouchableOpacity
+            onPress={showTimepicker}
+            style={styles.btnStyle}
+          >
+          {
+            show && (
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={date}
+                mode={mode}
+                is24Hour={true}
+                display="default"
+                onChange={onChange}
+              />
+            )
+          }
+            <Text style={styles.btnTextStyle}>Time</Text>
+          </TouchableOpacity>
+        </View>
 
-        <TouchableOpacity
-          style={styles.submitBtnStyle}
+        <View style={styles.centerContainer}>
+          <TouchableOpacity
+            style={styles.btnStyle}
+            onPress={pickDocument}
+          >
+            <Text style={styles.btnTextStyle}>
+              Upload File
+            </Text>
+          </TouchableOpacity>
 
-          onPress={pickDocument}
-        >
-          <Text style={{ color:"white"}}>Upload File</Text>
-        </TouchableOpacity>
-        <View>
+
+            {
+              file.length ?
+              (
+                  file.map((item, index) => (
+                    <View style={styles.fileStyle} key={index}>
+                    <TouchableOpacity onPress={() => removeFile(index)}>
+
+                        <Text style={{ color: 'white', fontSize: hp('1%') }}>
+                          { item }
+                        </Text>
+                    </TouchableOpacity>
+                    </View>
+
+                  ))
+              ): null
+            }
+
+        </View>
+
+        <View style={{ marginTop: 50}}>
           <Text>Secure or not ? </Text>
           <CheckBox
             style={{ color: "#ff0048" }}
@@ -221,7 +259,7 @@ export default function MessagesScreen({ navigation, route }) {
             </Text>
           </TouchableOpacity>
         </View>
-
+        </ScrollView>
       </SafeAreaView>
     </View>
   );
@@ -251,10 +289,23 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     paddingVertical: 10,
     borderRadius: 10,
+    borderWidth: 1,
+    borderColor: 'black',
+    padding: 10,
+  },
+  textAreaStyle: {
+    width: wp('90%'),
+    marginHorizontal: 10,
+    marginVertical: 10,
+    paddingVertical: 10,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: 'black',
+    padding: 10,
   },
   btnStyle: {
     height: hp('5%'),
-    width: wp('30%'),
+    width: wp('90%'),
     backgroundColor: '#F7DC6F',
     elevation: 10,
     borderRadius: 10,
@@ -268,6 +319,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  uploadText: {
+    fontSize: hp('1%'),
+    color: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   submitBtnStyle: {
     height: hp('5%'),
     width: wp('30%'),
@@ -276,7 +333,20 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginVertical: 20,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    alignSelf: 'center'
+  },
+  centerContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center'
+  },
+  fileStyle: {
+    width: wp('90%'),
+    height: hp('5%'),
+    backgroundColor: 'gray',
+    borderRadius: 10,
+    marginVertical: 10
   }
 
 });

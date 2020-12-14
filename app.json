@@ -22,7 +22,7 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "description": "",
+    "description": "Online printing services to your doorstep",
     "githubUrl": "https://github.com/k163791/OPS"
   }
 }
