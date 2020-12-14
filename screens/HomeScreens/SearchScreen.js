@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -14,19 +14,25 @@ import {
 } from "react-native-responsive-screen";
 import { Feather, Ionicons, FontAwesome } from "@expo/vector-icons";
 import { TextInput } from "react-native-gesture-handler";
+import axios from "axios";
+import { APP_URL } from "../constant_vars";
 
-export default function SearchScreen({ navigation }) {
-  const [message, setMessage] = useState([
-    { message: "Hello Brother", key: "1" },
-    { message: "Welcome to mumbai", key: "2" },
-    { message: "Hello Friend", key: "3" },
-    { message: "Hello Friend", key: "4" },
-    { message: "Hello Friend", key: "5" },
-    { message: "Hello Friend", key: "6" },
-    { message: "Hello Friend", key: "7" },
-    { message: "Hello Friend", key: "8" },
-    { message: "Hello Friend", key: "9" },
-  ]);
+export default function SearchScreen({ navigation, route }) {
+  const [message, setMessage] = useState([]);
+
+  useEffect(() => {
+    console.log('route: ', route.params)
+
+      axios.get(APP_URL + "product", {
+        headers: { 'Authorization': `Bearer ${route.params.token}`}
+      }).then(res => {
+        console.log('Response: ', res.data)
+        setMessage(res.data.result)
+      }).catch(err => {
+        alert(err);
+      })
+
+  }, [])
 
   return (
     <View style={{ flex: 1, marginBottom: 10 }}>
@@ -54,7 +60,7 @@ export default function SearchScreen({ navigation }) {
       </View>
 
       <View style={styles.headingContainer}>
-        <Text style={styles.heading}>Categories</Text>
+        <Text style={styles.heading}>Products</Text>
       </View>
 
       <SafeAreaView
@@ -77,7 +83,7 @@ export default function SearchScreen({ navigation }) {
                   }}
                 >
                   <Image
-                    source={{ uri: "https://i.redd.it/1ddlsj0xali51.jpg" }}
+                    source={{ uri: item.img[0] }}
                     style={{ height: 70, width: 70 }}
                   />
                   <Text
@@ -90,7 +96,7 @@ export default function SearchScreen({ navigation }) {
                       fontWeight: "bold",
                     }}
                   >
-                    {item.message}
+                    {item.title}
                   </Text>
 
                   <Text
@@ -103,7 +109,7 @@ export default function SearchScreen({ navigation }) {
                       marginRight: wp("35%"),
                     }}
                   >
-                    Build your Brand
+                    Item Price - {item.price}
                   </Text>
                 </View>
               </TouchableOpacity>

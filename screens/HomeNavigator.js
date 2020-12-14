@@ -58,7 +58,7 @@ export default function Homenavigator({ navigation, route }) {
     >
       <Tab.Screen name="Home" component={HomeScreen} initialParams={route.params.user}/>
       <Tab.Screen name="Request" component={MessagesScreen} initialParams={route.params.user} />
-      <Tab.Screen name="Search" component={SearchScreen} />
+      <Tab.Screen name="Search" component={SearchScreen} initialParams={route.params.user} />
       <Tab.Screen name="Notification" component={NotificationScreen} initialParams={route.params.user}/>
       <Tab.Screen name={"Account"} component={AccountScreen} />
     </Tab.Navigator>

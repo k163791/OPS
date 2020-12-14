@@ -193,7 +193,7 @@ export default function VendorMessages({ navigation, route }) {
   return (
     <View style={{ flex: 1, marginBottom: 10 }}>
       <View style={styles.headerContainer}>
-        <Text style={styles.headerText}>Manage Sales</Text>
+        <Text style={styles.headerText}>Manage Requests</Text>
         <TouchableOpacity
           style={{
             marginBottom: hp("3%"),
@@ -284,6 +284,7 @@ export default function VendorMessages({ navigation, route }) {
                           width: wp("30%"),
                           justifyContent: "center",
                           backgroundColor: "#5bc0de",
+                          padding: 10
                         }}
 
                       >
@@ -304,6 +305,7 @@ export default function VendorMessages({ navigation, route }) {
                             width: wp("30%"),
                             justifyContent: "center",
                             backgroundColor: "#5bc0de",
+                            padding: 10
                           }}
 
                           onPress={ () => saveFile(item.file) }
