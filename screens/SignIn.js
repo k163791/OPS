@@ -28,6 +28,7 @@ export default function SignIn({ navigation, route }) {
   const [ password, setPassword ] = useState("");
   const [ userSubmit, setUserSubmit ] = useState(false);
   const [ vendorSubmit, setVendorSubmit ] = useState(false);
+  const [ riderSubmit, setRiderSubmit ] = useState(false);
 
   const nextScreen = () => {
     navigation.navigate("Home", { username: route.params.username });
@@ -78,6 +79,25 @@ export default function SignIn({ navigation, route }) {
     }).catch(err => {
       setUserSubmit(false)
       alert(`Error: ${err}`)
+    })
+  }
+
+  const signinRider = () => {
+    if(!email.length || !password.length) {
+      alert("Please fill all fields to continue");
+      return;
+    }
+    setRiderSubmit(true)
+    axios.post(APP_URL + "rider/login", {
+      email: email.toLowerCase(),
+      password: password
+    }).then(res => {
+      setRiderSubmit(false)
+      resetForm()
+      navigation.navigate("RiderHome", { rider: res.data.result })
+    }).catch(err => {
+      alert(err);
+      setRiderSubmit(false)
     })
   }
 
@@ -132,6 +152,18 @@ export default function SignIn({ navigation, route }) {
           }
 
           </TouchableOpacity>
+
+          <TouchableOpacity onPress={signinRider} style={styles.btnContainer}>
+          {
+            riderSubmit ?
+            (
+              <ActivityIndicator size="large" color="white" />
+            ):
+            (
+              <Text style={styles.btnText}>continue as rider</Text>
+            )
+          }
+          </TouchableOpacity>
           <Text style={{ marginVertical: 15, fontSize: hp("1.8%") }}>
             or via social networks
           </Text>
@@ -177,14 +209,14 @@ const styles = StyleSheet.create({
   inputStyle: {
     width: "90%",
     backgroundColor: "#FCF3CF",
-    marginBottom: hp("2%"),
-    marginTop: hp("4%"),
+    marginBottom: hp("1%"),
+    marginTop: hp("1%"),
     padding: wp("3%"),
     borderRadius: 10,
   },
   btnContainer: {
     width: wp("90%"),
-    height: hp("8%"),
+    height: hp("7%"),
     elevation: 10,
     borderRadius: 10,
     backgroundColor: "gold",
@@ -201,7 +233,7 @@ const styles = StyleSheet.create({
   },
   leftBtn: {
     width: wp("40%"),
-    height: hp("8%"),
+    height: hp("7%"),
     marginHorizontal: wp("6%"),
     backgroundColor: "#0F60EC",
     borderRadius: 10,
@@ -215,7 +247,7 @@ const styles = StyleSheet.create({
   },
   rightBtn: {
     width: wp("40%"),
-    height: hp("8%"),
+    height: hp("7%"),
     marginHorizontal: wp("1%"),
     backgroundColor: "#309AF2",
     borderRadius: 10,

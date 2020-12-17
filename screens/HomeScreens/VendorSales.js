@@ -284,7 +284,7 @@ export default function VendorMessages({ navigation, route }) {
                           width: wp("30%"),
                           justifyContent: "center",
                           backgroundColor: "#5bc0de",
-                          padding: 10
+                          
                         }}
 
                       >
@@ -305,7 +305,6 @@ export default function VendorMessages({ navigation, route }) {
                             width: wp("30%"),
                             justifyContent: "center",
                             backgroundColor: "#5bc0de",
-                            padding: 10
                           }}
 
                           onPress={ () => saveFile(item.file) }

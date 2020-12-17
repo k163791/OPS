@@ -30,7 +30,7 @@ export default function SignUp({ navigation, route }) {
   const [ password, setPassword ] = useState("");
   const [ userSubmit, setUserSubmit ] = useState(false)
   const [ vendorSubmit, setVendorSubmit ] = useState(false)
-
+  const [ riderSubmit, setRiderSubmit ] = useState(false)
 
   const resetForm = () => {
     setEmail("")
@@ -45,8 +45,12 @@ export default function SignUp({ navigation, route }) {
     });
   };
 
-  const HomeUserScreen = () => {
-    navigation.navigate("Home", { username: route.params.username });
+  const HomeUserScreen = (user) => {
+    navigation.navigate("Home", { user: user });
+  }
+
+  const HomeRiderScreen = (rider) => {
+    navigation.navigate("RiderHome", { rider: rider });
   }
 
   const SignUpVendor = () => {
@@ -70,7 +74,36 @@ export default function SignUp({ navigation, route }) {
     setVendorSubmit(false)
     resetForm()
     nextScreen(vendorData);
+  }
 
+  const signUpRider = () => {
+    if(!email.length || !password.length || !username.length) {
+      alert("Please fill all fields")
+      return;
+    }
+
+    if(!email.match(new RegExp(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/))) {
+      alert("Invalid email");
+      return;
+    }
+
+    let fullName = username.split(" ")
+    // console.log(fullName[0], fullName[1])
+    setRiderSubmit(true)
+    axios.post(APP_URL + "rider/register", {
+      email: email.toLowerCase(),
+      password: password,
+      first_name: fullName[0],
+      last_name: fullName[1],
+      contact: "03323696481",
+    }).then(res => {
+        resetForm();
+        setRiderSubmit(false);
+        HomeRiderScreen();
+    }).catch(err => {
+        alert(err)
+        setRiderSubmit(false);
+    })
   }
 
   const signUpUser = () => {
@@ -85,7 +118,7 @@ export default function SignUp({ navigation, route }) {
     }
 
     let fullName = username.split(" ")
-    console.log(fullName[0], fullName[1])
+    // console.log(fullName[0], fullName[1])
     setUserSubmit(true)
     axios.post(APP_URL + "user/register", {
       email: email,
@@ -93,16 +126,18 @@ export default function SignUp({ navigation, route }) {
       first_name: fullName[0],
       last_name: fullName[1],
     }).then(res => {
-      // console.log('response: ', res);
+      console.log('response: ', res.data);
       resetForm()
       setUserSubmit(false)
-      HomeUserScreen()
+      HomeUserScreen(res.data.result)
       // alert(res);
     }).catch(err => {
       alert(err);
     })
-
   }
+
+
+
 
   return (
     <View style={styles.container}>
@@ -164,6 +199,17 @@ export default function SignUp({ navigation, route }) {
                 <Text style={styles.btnText}>continue as vendor</Text>
             )
           }
+        </TouchableOpacity>
+        <TouchableOpacity onPress={signUpRider} style={styles.btnContainer}>
+        {
+          riderSubmit ?
+          (
+            <ActivityIndicator size="large" color="white" />
+          ):
+          (
+            <Text style={styles.btnText}>continue as rider</Text>
+          )
+        }
         </TouchableOpacity>
       </View>
       <View style={styles.termsOfService}>

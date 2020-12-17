@@ -83,7 +83,7 @@ export default function MessagesScreen({ navigation, route }) {
       time: newTime,
       description: description,
       title: title,
-      file: file,
+      file: JSON.stringify(file),
       type: type,
       cost: cost,
     }, {

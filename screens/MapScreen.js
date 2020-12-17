@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Marker, Polyline } from "react-native-maps";
 import { TextInput } from "react-native-paper";
 import {
   widthPercentageToDP,
@@ -11,20 +11,28 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 export default function MapScreen({ navigation }) {
   return (
     <View style={{ flex: 1 }}>
-      <MapView
-        initialRegion={{
-          latitude: 24.9056,
-          longitude: 67.0822,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-        style={{ flex: 1 }}
+      <MapView style={{ flex: 1 }}
       >
-        <Marker
-          coordinate={{ latitude: 24.9177524, longitude: 67.0996697 }}
-          title={"Deneme"}
-        />
-      </MapView>
+        <Polyline
+      		coordinates={[
+      			{ latitude: 24.9008, longitude: 67.1681 },
+            { latitude: 24.9056, longitude: 67.0822},
+
+      			// { latitude: 37.8025259, longitude: -122.4351431 }
+      		]}
+      		strokeColor="#000" // fallback for when `strokeColors` is not supported by the map-provider
+      		strokeColors={[
+      			'#7F0000',
+      			'#00000000', // no color, creates a "long" gradient between the previous and next coordinate
+      			'#B24112',
+      			'#E5845C',
+      			'#238C23',
+      			'#7F0000'
+      		]}
+      		strokeWidth={6}
+    	/>
+    </MapView>
+
       <View style={{ alignItems: "center", marginVertical: 10 }}>
         <Text
           style={{
