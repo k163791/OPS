@@ -90,9 +90,7 @@ export default function RiderHomeScreen({ navigation, route }) {
         <SafeAreaView>
           {allRequests()}
 
-          <TouchableOpacity style={styles.acceptBtnStyle} onPress={() => navigation.navigate("MapView")}>
-            <Text>Hello</Text>
-          </TouchableOpacity>
+          
         </SafeAreaView>
       </ScrollView>
     </View>

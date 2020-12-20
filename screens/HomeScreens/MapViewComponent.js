@@ -43,7 +43,12 @@ export default function MapScreen({ navigation, route }) {
   return (
     <View style={{ flex: 1 }}>
       <MapView
-        initialRegion={location.coords}
+        initialRegion={{
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }}
         style={{ flex: 1 }}
       >
         <Marker
@@ -53,6 +58,7 @@ export default function MapScreen({ navigation, route }) {
 
         <Marker
           coordinate={{ latitude: location.coords.latitude + dynamic, longitude: location.coords.longitude }}
+          pinColor="gold"
         />
 
 
