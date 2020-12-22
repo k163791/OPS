@@ -36,7 +36,7 @@ export default function FirstScreen({ navigation }) {
             left: wp("8%"),
           }}
         >
-          <TouchableOpacity onPress={() => navigation.navigate("MapScreen")}>
+          <TouchableOpacity onPress={() => navigation.navigate("Join", { username: "Client"})}>
             <Image
               source={{ uri: "https://image.freepik.com/free-vector/customer-care-illustration-concept_42694-26.jpg" }}
               style={{
@@ -98,7 +98,7 @@ export default function FirstScreen({ navigation }) {
         </View>
         <View style={styles.signInContainer}>
           <View style={styles.signInCard}>
-            <TouchableOpacity onPress={() => navigation.navigate("MapScreen")}>
+            <TouchableOpacity onPress={() => navigation.navigate("Join")}>
               <Image
                 source={{ uri: "https://i.redd.it/lwduoatqpvjz.jpg" }}
                 style={{

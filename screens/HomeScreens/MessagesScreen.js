@@ -29,7 +29,7 @@ export default function MessagesScreen({ navigation, route }) {
   const [ cost, setCost ] = useState("")
   const [ show, setShow ] = useState(false)
   const [ mode, setMode ] = useState("date")
-  const [ date, setDate ] = useState(new Date());
+  const [ date, setDate ] = useState(new Date);
   const [ file, setFile ] = useState([]);
   const [ secure, setSecure ] = useState(false);
 
@@ -69,7 +69,9 @@ export default function MessagesScreen({ navigation, route }) {
       return
     }
 
-    let type = "secure";
+    console.log("secure: ", secure)
+
+    let type = "secret";
     if(!secure) {
       type = "normal";
     }
@@ -77,7 +79,7 @@ export default function MessagesScreen({ navigation, route }) {
     let newDate = date.toDateString();
     let newTime = date.toLocaleTimeString();
 
-
+    console.log("type: ", type)
     axios.post(APP_URL + `user/documentRequest?type=${type}`, {
       date: newDate,
       time: newTime,
@@ -171,6 +173,11 @@ export default function MessagesScreen({ navigation, route }) {
           }
           <Text style={styles.btnTextStyle}>Date</Text>
           </TouchableOpacity>
+
+          <View style={{ marginTop: 10 }}>
+            <Text>{date.toDateString()}</Text>
+          </View>
+
         </View>
 
 
@@ -193,6 +200,11 @@ export default function MessagesScreen({ navigation, route }) {
           }
             <Text style={styles.btnTextStyle}>Time</Text>
           </TouchableOpacity>
+
+          <View style={{ marginTop: 10 }}>
+            <Text>{date.toLocaleTimeString()}</Text>
+          </View>
+
         </View>
 
         <View style={styles.centerContainer}>

@@ -66,7 +66,7 @@ export default function SignUp({ navigation, route }) {
 
     setVendorSubmit(true)
     let vendorData = {
-      email: email,
+      email: email.toLowerCase(),
       password: password,
       name: username,
     }
@@ -99,7 +99,7 @@ export default function SignUp({ navigation, route }) {
     }).then(res => {
         resetForm();
         setRiderSubmit(false);
-        HomeRiderScreen();
+        HomeRiderScreen(res.data.result);
     }).catch(err => {
         alert(err)
         setRiderSubmit(false);
@@ -121,12 +121,12 @@ export default function SignUp({ navigation, route }) {
     // console.log(fullName[0], fullName[1])
     setUserSubmit(true)
     axios.post(APP_URL + "user/register", {
-      email: email,
+      email: email.toLowerCase(),
       password: password,
       first_name: fullName[0],
       last_name: fullName[1],
     }).then(res => {
-      console.log('response: ', res.data);
+      console.log('response: ', res.data.result);
       resetForm()
       setUserSubmit(false)
       HomeUserScreen(res.data.result)

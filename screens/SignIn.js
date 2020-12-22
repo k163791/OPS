@@ -78,7 +78,7 @@ export default function SignIn({ navigation, route }) {
       navigation.navigate("Home", { user: res.data.result })
     }).catch(err => {
       setUserSubmit(false)
-      alert(`Error: ${err}`)
+      alert(err)
     })
   }
 
