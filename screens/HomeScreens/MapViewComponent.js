@@ -40,6 +40,20 @@ export default function MapScreen({ navigation, route }) {
     })();
   }, []);
 
+  const orderStatus = () => {
+    axios.post(APP_URL + "rider/orderStatus/" + route.params.data._id, {
+      tracking: {
+        shipped: true,
+        delivered: true
+      }
+    }).then(res => {
+      alert("Order has been delivered")
+      navigation.goBack()
+    }).catch(err => {
+      alert(err)
+    })
+  }
+
   return (
     <View style={{ flex: 1 }}>
       <MapView
